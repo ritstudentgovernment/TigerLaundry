@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  washers: 1
+  driers: 1
+  name: 
+
+two:
+  washers: 1
+  driers: 1
+  name: 
