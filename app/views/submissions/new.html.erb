@@ -1,0 +1,9 @@
+<h1>New Submission for <%= @facility.name %></h1>
+
+<%= form_for([@facility, @facility.submissions.new]) do |f| %>
+  <%= f.label :washers, 'Percent Washers Available' %>
+  <%= f.text_field :washers %><br />
+  <%= f.label :driers, 'Percent Driers Available' %>
+  <%= f.text_field :driers %><br />
+  <%= f.submit %>
+<% end %>
