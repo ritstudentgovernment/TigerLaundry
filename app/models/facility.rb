@@ -1,3 +1,3 @@
 class Facility < ActiveRecord::Base
-	has_many :submission
+	has_many :submissions
 end
