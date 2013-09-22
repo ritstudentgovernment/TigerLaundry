@@ -3,8 +3,8 @@ TigerLaundry::Application.routes.draw do
   root to: "pages#index"
 
   # Facilities is shortened to /f/, and publically it can only do 'index' and 'show'
-  resources :facilities, :path => 'f', :only => ['index', 'show'] do
+  resources :facilities, path: 'f', only: [:index, :show] do
     # Allow for new submissions, also shorten to /s/ to be friendly
-    resources :submissions, :path => 's', :only => ['new']
+    resources :submissions, path: 's', only: [:new, :create]
   end
 end
