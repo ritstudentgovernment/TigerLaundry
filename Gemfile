@@ -32,6 +32,13 @@ group :doc do
   gem 'sdoc', require: false
 end
 
+group :development do
+  gem "better_errors"
+end
+
+# for advanced better_errors features
+gem "binding_of_caller"
+
 gem 'bootstrap-sass-rails'
 
 gem 'haml-rails'
