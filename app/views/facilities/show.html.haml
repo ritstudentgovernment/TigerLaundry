@@ -1,0 +1,15 @@
+%p#notice= notice
+
+%p
+  %b Washers:
+  = @facility.washers
+%p
+  %b Driers:
+  = @facility.driers
+%p
+  %b Name:
+  = @facility.name
+
+= link_to 'Edit', edit_facility_path(@facility)
+\|
+= link_to 'Back', facilities_path

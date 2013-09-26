@@ -1,0 +1,23 @@
+%h1 Listing facilities
+
+%table
+  %tr
+    %th Washers
+    %th Driers
+    %th Name
+    %th
+    %th
+    %th
+
+  - @facilities.each do |facility|
+    %tr
+      %td= facility.washers
+      %td= facility.driers
+      %td= facility.name
+      %td= link_to 'Show', facility
+      %td= link_to 'Edit', edit_facility_path(facility)
+      %td= link_to 'Destroy', facility, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+%br
+
+= link_to 'New Facility', new_facility_path

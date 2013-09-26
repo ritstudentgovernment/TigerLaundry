@@ -1,9 +1,0 @@
-<h1>Facilities</h1>
-
-<ul>
-<% @facilities.each do |facility| %>
-  <li><%= link_to facility.name, facility_url(facility) %></li>
-<% end %>
-</ul>
-
-<%= link_to 'Main Page', root_url %>

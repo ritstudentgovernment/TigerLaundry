@@ -3,9 +3,9 @@
 one:
   washers: 1
   driers: 1
-  name: 
+  name: MyString
 
 two:
   washers: 1
   driers: 1
-  name: 
+  name: MyString
