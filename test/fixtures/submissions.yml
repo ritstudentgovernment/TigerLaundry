@@ -1,9 +1,11 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
 
 one:
-  driers: 1
   washers: 1
+  driers: 1
+  facility_id: 
 
 two:
-  driers: 1
   washers: 1
+  driers: 1
+  facility_id: 
