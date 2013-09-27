@@ -1,0 +1,17 @@
+%div.navbar.navbar-default{role:"navigation"}
+  %div.navbar-header
+    %button.navbar-toggle{:type =>"button",
+                          :"data-toggle"=>"collapse",
+                          :"data-target"=>".navbar-ex1-collapse"}
+      %span.sr-only "Toggle navigation"
+      %span.icon-bar
+      %span.icon-bar
+      %span.icon-bar
+    = link_to "TigerLaundry", root_url, {class:"navbar-brand"}
+  %div.collapse.navbar-collapse.navbar-ex1-collapse
+    %ul.nav.navbar-nav
+      -# active class is only applied to the current controller's link
+      %li{class: ("active" if params[:controller] == 'facilities')}
+        = link_to "Facilities", facilities_url
+      %li{class: ("active" if params[:controller] == 'sumbissions')}
+        = link_to "Submissions", submissions_url
