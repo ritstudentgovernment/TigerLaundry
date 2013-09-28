@@ -1,7 +1,7 @@
-%h1 Editing facility
+%h1 Editing Facility
 
 = render 'form'
 
-= link_to 'Show', @facility
-\|
-= link_to 'Back', facilities_path
+.btn-group
+  = link_to 'Show', @facility, class: "btn btn-default"
+  = link_to 'Back', facilities_path, class: "btn btn-default"

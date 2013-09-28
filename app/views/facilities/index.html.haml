@@ -1,23 +1,24 @@
-%h1 Listing facilities
+%h1 All Facilities
 
-%table
-  %tr
-    %th Washers
-    %th Driers
-    %th Name
-    %th
-    %th
-    %th
-
-  - @facilities.each do |facility|
+.table-responsive
+  %table.table
     %tr
-      %td= facility.washers
-      %td= facility.driers
-      %td= facility.name
-      %td= link_to 'Show', facility
-      %td= link_to 'Edit', edit_facility_path(facility)
-      %td= link_to 'Destroy', facility, :method => :delete, :data => { :confirm => 'Are you sure?' }
+      %th Name
+      %th Washers
+      %th Driers
+      %th Operations
+
+    - @facilities.each do |facility|
+      %tr
+        %td= link_to facility.name, facility
+        %td= facility.washers
+        %td= facility.driers
+        %td
+          .btn-group
+            = link_to 'Show', facility, class: "btn btn-default"
+            = link_to 'Edit', edit_facility_path(facility), class: "btn btn-default"
+            = link_to 'Destroy', facility, method: :delete, data: {confirm: 'Are you sure?'}, class: "btn btn-default"
 
 %br
 
-= link_to 'New Facility', new_facility_path
+= link_to 'New Facility', new_facility_path, class: "btn btn-primary"

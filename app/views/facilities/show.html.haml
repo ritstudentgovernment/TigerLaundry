@@ -1,15 +1,19 @@
+%h1= @facility.name
+
 %p#notice= notice
 
-%p
-  %b Washers:
-  = @facility.washers
-%p
-  %b Driers:
-  = @facility.driers
-%p
-  %b Name:
-  = @facility.name
+.row
+  %b.col-md-1.text-right Name:
+  %div.col-md-11= @facility.name
+.row
+  %b.col-md-1.text-right Washers:
+  %div.col-md-11= @facility.washers
+.row
+  %b.col-md-1.text-right Driers:
+  %div.col-md-11= @facility.driers
 
-= link_to 'Edit', edit_facility_path(@facility)
-\|
-= link_to 'Back', facilities_path
+%br
+
+.btn-group
+  = link_to 'Edit', edit_facility_path(@facility), class: "btn btn-default"
+  = link_to 'Back', facilities_path, class: "btn btn-default"

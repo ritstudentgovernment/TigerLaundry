@@ -1,4 +1,4 @@
-= form_for @facility do |f|
+= form_for @facility, html: {class: "form-horizontal"} do |f|
   - if @facility.errors.any?
     #error_explanation
       %h2= "#{pluralize(@facility.errors.count, "error")} prohibited this facility from being saved:"
@@ -6,14 +6,18 @@
         - @facility.errors.full_messages.each do |msg|
           %li= msg
 
-  .field
-    = f.label :washers
-    = f.number_field :washers
-  .field
-    = f.label :driers
-    = f.number_field :driers
-  .field
-    = f.label :name
-    = f.text_field :name
-  .actions
-    = f.submit 'Save'
+  .form-group
+    = f.label :name, class: "control-label col-md-2"
+    .col-md-10
+      = f.text_field :name, class: "form-control", placeholder: "Name"
+  .form-group
+    = f.label :washers, class: "control-label col-md-2"
+    .col-md-10
+      = f.number_field :washers, class: "form-control", placeholder: "Washers"
+  .form-group
+    = f.label :driers, class: "control-label col-md-2"
+    .col-md-10
+      = f.number_field :driers, class: "form-control", placeholder: "Driers"
+  .form-group
+    .col-md-offset-2.col-md-10
+      = f.submit 'Save', class: "btn btn-primary"
