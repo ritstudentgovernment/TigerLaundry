@@ -3,5 +3,5 @@
 = render 'form'
 
 .btn-group
-  = link_to 'Show', @submission, class: "btn btn-default"
-  = link_to 'Back', submissions_path, class: "btn btn-default"
+  = link_to 'Show', facility_submission_path(@facility, @submission), class: "btn btn-default"
+  = link_to 'Show All', facility_submissions_path(@facility), class: "btn btn-default"

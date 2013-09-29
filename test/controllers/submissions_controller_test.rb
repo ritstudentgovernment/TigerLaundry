@@ -6,44 +6,49 @@ class SubmissionsControllerTest < ActionController::TestCase
   end
 
   test "should get index" do
-    get :index
+    get :index, facility_id: @submission.facility_id
     assert_response :success
     assert_not_nil assigns(:submissions)
   end
 
   test "should get new" do
-    get :new
+    get :new, facility_id: @submission.facility_id
     assert_response :success
   end
 
   test "should create submission" do
     assert_difference('Submission.count') do
-      post :create, submission: { driers: @submission.driers, facility_id: @submission.facility_id, washers: @submission.washers }
+      post :create,
+           facility_id: @submission.facility_id,
+           submission: { driers: @submission.driers, facility_id: @submission.facility_id, washers: @submission.washers }
     end
 
-    assert_redirected_to submission_path(assigns(:submission))
+    assert_redirected_to facility_submission_path(assigns(:facility), assigns(:submission))
   end
 
   test "should show submission" do
-    get :show, id: @submission
+    get :show, id: @submission, facility_id: @submission.facility_id
     assert_response :success
   end
 
   test "should get edit" do
-    get :edit, id: @submission
+    get :edit, id: @submission, facility_id: @submission.facility_id
     assert_response :success
   end
 
   test "should update submission" do
-    patch :update, id: @submission, submission: { driers: @submission.driers, facility_id: @submission.facility_id, washers: @submission.washers }
-    assert_redirected_to submission_path(assigns(:submission))
+    patch :update,
+          id: @submission,
+          facility_id: @submission.facility_id,
+          submission: { driers: @submission.driers, facility_id: @submission.facility_id, washers: @submission.washers }
+    assert_redirected_to facility_submission_path(assigns(:facility), assigns(:submission))
   end
 
   test "should destroy submission" do
     assert_difference('Submission.count', -1) do
-      delete :destroy, id: @submission
+      delete :destroy, id: @submission, facility_id: @submission.facility_id
     end
 
-    assert_redirected_to submissions_path
+    assert_redirected_to facility_submissions_path(assigns(:facility))
   end
 end

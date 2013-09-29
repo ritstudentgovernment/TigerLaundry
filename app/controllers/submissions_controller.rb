@@ -1,34 +1,35 @@
 class SubmissionsController < ApplicationController
+  before_action :set_facility
   before_action :set_submission, only: [:show, :edit, :update, :destroy]
 
-  # GET /submissions
-  # GET /submissions.json
+  # GET facilities/1/submissions
+  # GET facilities/1/submissions.json
   def index
-    @submissions = Submission.all
+    @submissions = Facility.find(params[:facility_id]).submissions
   end
 
-  # GET /submissions/1
-  # GET /submissions/1.json
+  # GET /facilities/1/submissions/1
+  # GET /facilities/1/submissions/1.json
   def show
   end
 
-  # GET /submissions/new
+  # GET /facilities/1/submissions/new
   def new
     @submission = Submission.new
   end
 
-  # GET /submissions/1/edit
+  # GET /facilities/1/submissions/1/edit
   def edit
   end
 
-  # POST /submissions
-  # POST /submissions.json
+  # POST /facilities/1/submissions
+  # POST /facilities/1/submissions.json
   def create
     @submission = Submission.new(submission_params)
 
     respond_to do |format|
       if @submission.save
-        format.html { redirect_to @submission, notice: 'Submission was successfully created.' }
+        format.html { redirect_to facility_submission_path(@facility, @submission), notice: 'Submission was successfully created.' }
         format.json { render action: 'show', status: :created, location: @submission }
       else
         format.html { render action: 'new' }
@@ -37,12 +38,12 @@ class SubmissionsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /submissions/1
-  # PATCH/PUT /submissions/1.json
+  # PATCH/PUT /facilities/1/submissions/1
+  # PATCH/PUT /facilities/1/submissions/1.json
   def update
     respond_to do |format|
       if @submission.update(submission_params)
-        format.html { redirect_to @submission, notice: 'Submission was successfully updated.' }
+        format.html { redirect_to facility_submission_path(@facility, @submission), notice: 'Submission was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: 'edit' }
@@ -51,18 +52,21 @@ class SubmissionsController < ApplicationController
     end
   end
 
-  # DELETE /submissions/1
-  # DELETE /submissions/1.json
+  # DELETE /facilities/1/submissions/1
+  # DELETE /facilities/1/submissions/1.json
   def destroy
     @submission.destroy
     respond_to do |format|
-      format.html { redirect_to submissions_url }
+      format.html { redirect_to facility_submissions_url(@facility) }
       format.json { head :no_content }
     end
   end
 
   private
     # Use callbacks to share common setup or constraints between actions.
+    def set_facility
+      @facility   = Facility.find(params[:facility_id])
+    end
     def set_submission
       @submission = Submission.find(params[:id])
     end

@@ -18,6 +18,9 @@
             = link_to 'Show', facility, class: "btn btn-default"
             = link_to 'Edit', edit_facility_path(facility), class: "btn btn-default"
             = link_to 'Destroy', facility, method: :delete, data: {confirm: 'Are you sure?'}, class: "btn btn-default"
+          .btn-group
+            = link_to 'New Submission', new_facility_submission_path(facility), class: "btn btn-default"
+            = link_to 'Show submissions', facility_submissions_path(facility), class: "btn btn-default"
 
 %br
 

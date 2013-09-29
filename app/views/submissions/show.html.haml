@@ -15,10 +15,13 @@
   %div.col-md-11= @submission.driers
 .row
   %b.col-md-1.text-right Facility:
-  %div.col-md-11= @submission.facility.name
+  - if @submission.facility
+    %div.col-md-11= @submission.facility.name
+  - else
+    %div.col-md-11 No Facility
 
 %br
 
 .btn-group
-  = link_to 'Edit', edit_submission_path(@submission), class: "btn btn-default"
-  = link_to 'Back', submissions_path, class: "btn btn-default"
+  = link_to 'Edit', edit_facility_submission_path(@facility, @submission), class: "btn btn-default"
+  = link_to 'Show All', facility_submissions_path(@facility), class: "btn btn-default"

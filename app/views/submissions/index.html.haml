@@ -1,4 +1,6 @@
-%h1 Listing Submissions
+%h1
+  Listing Submissions for 
+  = @facility.name
 
 .table-responsive
   %table.table
@@ -18,10 +20,13 @@
           %td No Facility
         %td
           .btn-group
-            = link_to 'Show', submission, class: "btn btn-default"
-            = link_to 'Edit', edit_submission_path(submission), class: "btn btn-default"
-            = link_to 'Destroy', submission, :method => :delete, :data => { :confirm => 'Are you sure?' }, class: "btn btn-default"
+            = link_to 'Show', facility_submission_path(@facility, submission), class: "btn btn-default"
+            = link_to 'Edit', edit_facility_submission_path(@facility, submission), class: "btn btn-default"
+            = link_to 'Destroy', facility_submission_path(@facility, submission),
+                :method => :delete,
+                :data => { :confirm => 'Are you sure?' },
+                class: "btn btn-default"
 
 %br
 
-= link_to 'New Submission', new_submission_path, class: "btn btn-primary"
+= link_to 'New Submission', new_facility_submission_path(@facility), class: "btn btn-primary"
