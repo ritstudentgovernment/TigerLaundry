@@ -1,15 +1,24 @@
+%h1 
+  Submission for 
+  - if @submission.facility
+    = @submission.facility.name
+  - else
+    = "No Facility"
+
 %p#notice= notice
 
-%p
-  %b Washers:
-  = @submission.washers
-%p
-  %b Driers:
-  = @submission.driers
-%p
-  %b Facility:
-  = @submission.facility
+.row
+  %b.col-md-1.text-right Washers:
+  %div.col-md-11= @submission.washers
+.row
+  %b.col-md-1.text-right Driers:
+  %div.col-md-11= @submission.driers
+.row
+  %b.col-md-1.text-right Facility:
+  %div.col-md-11= @submission.facility.name
 
-= link_to 'Edit', edit_submission_path(@submission)
-\|
-= link_to 'Back', submissions_path
+%br
+
+.btn-group
+  = link_to 'Edit', edit_submission_path(@submission), class: "btn btn-default"
+  = link_to 'Back', submissions_path, class: "btn btn-default"

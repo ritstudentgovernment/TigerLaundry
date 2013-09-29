@@ -1,23 +1,27 @@
-%h1 Listing submissions
+%h1 Listing Submissions
 
-%table
-  %tr
-    %th Washers
-    %th Driers
-    %th Facility
-    %th
-    %th
-    %th
-
-  - @submissions.each do |submission|
+.table-responsive
+  %table.table
     %tr
-      %td= submission.washers
-      %td= submission.driers
-      %td= submission.facility
-      %td= link_to 'Show', submission
-      %td= link_to 'Edit', edit_submission_path(submission)
-      %td= link_to 'Destroy', submission, :method => :delete, :data => { :confirm => 'Are you sure?' }
+      %th Washers
+      %th Driers
+      %th Facility
+      %th Operations
+
+    - @submissions.each do |submission|
+      %tr
+        %td= submission.washers
+        %td= submission.driers
+        - if submission.facility
+          %td= submission.facility.name
+        - else
+          %td No Facility
+        %td
+          .btn-group
+            = link_to 'Show', submission, class: "btn btn-default"
+            = link_to 'Edit', edit_submission_path(submission), class: "btn btn-default"
+            = link_to 'Destroy', submission, :method => :delete, :data => { :confirm => 'Are you sure?' }, class: "btn btn-default"
 
 %br
 
-= link_to 'New Submission', new_submission_path
+= link_to 'New Submission', new_submission_path, class: "btn btn-primary"

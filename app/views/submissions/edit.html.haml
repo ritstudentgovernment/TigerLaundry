@@ -1,7 +1,7 @@
-%h1 Editing submission
+%h1 Editing Submission
 
 = render 'form'
 
-= link_to 'Show', @submission
-\|
-= link_to 'Back', submissions_path
+.btn-group
+  = link_to 'Show', @submission, class: "btn btn-default"
+  = link_to 'Back', submissions_path, class: "btn btn-default"

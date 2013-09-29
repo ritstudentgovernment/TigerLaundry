@@ -1,4 +1,4 @@
-= form_for @submission do |f|
+= form_for @submission, html: {class: "form-horizontal"} do |f|
   - if @submission.errors.any?
     #error_explanation
       %h2= "#{pluralize(@submission.errors.count, "error")} prohibited this submission from being saved:"
@@ -6,14 +6,19 @@
         - @submission.errors.full_messages.each do |msg|
           %li= msg
 
-  .field
-    = f.label :washers
-    = f.number_field :washers
-  .field
-    = f.label :driers
-    = f.number_field :driers
-  .field
-    = f.label :facility
-    = f.text_field :facility
-  .actions
-    = f.submit 'Save'
+  .form-group
+    = f.label :washers, class: "control-label col-md-2"
+    .col-md-10
+      = f.number_field :washers, class: "form-control", placeholder: "Washers"
+  .form-group
+    = f.label :driers, class: "control-label col-md-2"
+    .col-md-10
+      = f.number_field :driers, class: "form-control", placeholder: "Driers"
+  .form-group
+    = f.label :facility, class: "control-label col-md-2"
+    .col-md-10
+      = select :submission, :facility_id, 
+               Facility.all.collect {|facility| [facility.name, facility.id]}
+  .form-group
+    .col-md-offset-2.col-md-10
+      = f.submit 'Save', class: "btn btn-primary"
