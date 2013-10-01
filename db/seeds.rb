@@ -6,6 +6,19 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
-gv400 = Facility.create({name: 'Global Village 400', washers: 6, driers: 6})
-gv400submission = Submission.create({washers: 50, driers: 50, facility_id: gv400})
-gv400submission = Submission.create({washers: 25, driers: 25, facility_id: gv400})
+gv400     = Facility.create({name: 'Global Village 400', washers: 6,  driers: 6})
+ellingson = Facility.create({name: 'Ellingson',          washers: 20, driers: 20})
+gibson    = Facility.create({name: 'Gibson',             washers: 8,  driers: 8})
+solH      = Facility.create({name: 'Sol Heumann',        washers: 20, driers: 20})
+gleason   = Facility.create({name: 'Gleason',            washers: 22, driers: 22})
+reshallA  = Facility.create({name: 'Residence Hall A',   washers: 6,  driers: 6})
+reshallB  = Facility.create({name: 'Residence Hall B',   washers: 6,  driers: 6})
+reshallC  = Facility.create({name: 'Residence Hall C',   washers: 6,  driers: 6})
+
+facilities = [gv400, ellingson, gibson, solH,
+              gleason, reshallA, reshallB, reshallC]
+
+# Add at least 1 submission to every facility
+facilities.each do |facility|
+  Submission.create({washers: 50, driers: 50, facility_id: facility.id})
+end
