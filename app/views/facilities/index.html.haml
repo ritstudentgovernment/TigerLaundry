@@ -1,27 +1,52 @@
-%h1 All Facilities
+%h1.text-center All Facilities
 
-.table-responsive
-  %table.table
-    %tr
-      %th Name
-      %th Washers
-      %th Driers
-      %th Operations
-
+.row
+  .col-md-3
+    -# List all of the facilities
+    %ul.nav.nav-stacked.nav-pills
+      - @facilities.each do |facility|
+        %li= link_to facility.name, facility_path(facility)
+      %li
+        %a{href: new_facility_path}
+          %span.glyphicon.glyphicon-plus
+          New Facility
+  .col-md-9
     - @facilities.each do |facility|
-      %tr
-        %td= link_to facility.name, facility
-        %td= facility.washers
-        %td= facility.driers
-        %td
-          .btn-group
-            = link_to 'Show', facility, class: "btn btn-default"
-            = link_to 'Edit', edit_facility_path(facility), class: "btn btn-default"
-            = link_to 'Destroy', facility, method: :delete, data: {confirm: 'Are you sure?'}, class: "btn btn-default"
-          .btn-group
-            = link_to 'New Submission', new_facility_submission_path(facility), class: "btn btn-default"
-            = link_to 'Show submissions', facility_submissions_path(facility), class: "btn btn-default"
-
-%br
-
-= link_to 'New Facility', new_facility_path, class: "btn btn-primary"
+      .panel.panel-default{:"facility-id" => facility.id}
+        %div.panel-heading
+          = link_to facility.name, facility_path(facility)
+          - status = facility.status
+          - if status == :full
+            .label.label-danger Full
+          - elsif status == :almost_full
+            .label.label-warning Almost Full
+          - else
+            .label.label-success Open
+        .panel-body
+          .panel.panel-default
+            .panel-body
+              .row
+                .col-md-6
+                  Washers in use: 
+                  = facility.last_submission.washers.to_s + "%"
+                  of
+                  = facility.washers
+                .col-md-6
+                  Driers in use:
+                  = facility.last_submission.driers.to_s + '%'
+                  of
+                  = facility.driers
+              .row
+                .col-md-12
+                  %small{title: facility.last_submission.created_at}
+                    = time_ago_in_words(facility.last_submission.created_at)
+                    ago
+          .row
+            .col-md-12
+              .btn-group
+                = link_to 'New Submission',
+                          new_facility_submission_path(facility),
+                          class: "btn btn-default"
+                = link_to 'All Submissions',
+                          facility_submissions_path(facility),
+                          class: "btn btn-default"
