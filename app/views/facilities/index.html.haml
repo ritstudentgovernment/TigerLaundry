@@ -26,14 +26,15 @@
           .panel.panel-default
             .panel-body
               .row
-                .col-md-12
+                .col-md-4
                   %div.facility-graph{:"facility-id" => facility.id}
-              .row
-                .col-md-6
-                  Washers in use: 
-                  = facility.last_submission.washers.to_s + "%"
-                  of
-                  = facility.washers
+                .col-md-8
+                  .row
+                    .col-md-6
+                      Washers in use: 
+                      = facility.last_submission.washers.to_s + "%"
+                      of
+                      = facility.washers
                 .col-md-6
                   Driers in use:
                   = facility.last_submission.driers.to_s + '%'

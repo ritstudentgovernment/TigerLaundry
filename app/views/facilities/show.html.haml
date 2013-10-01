@@ -1,18 +1,22 @@
-%h1= @facility.name
+%h1.text-center= @facility.name
 
 %p#notice= notice
 
 .row
-  %b.col-md-1.text-right Name:
-  %div.col-md-11= @facility.name
-.row
-  %b.col-md-1.text-right Washers:
-  %div.col-md-11= @facility.washers
-.row
-  %b.col-md-1.text-right Driers:
-  %div.col-md-11= @facility.driers
-
-%br
+  .col-md-6
+    .facility-graph{:"facility-id"=>@facility.id}
+  .col-md-6
+    .panel.panel-default
+      .panel-body
+        .row
+          %b.col-md-2.text-right Name:
+          %div.col-md-10= @facility.name
+        .row
+          %b.col-md-2.text-right Washers:
+          %div.col-md-10= @facility.washers
+        .row
+          %b.col-md-2.text-right Driers:
+          %div.col-md-10= @facility.driers
 
 .btn-group
   = link_to 'Edit', edit_facility_path(@facility), class: "btn btn-default"
