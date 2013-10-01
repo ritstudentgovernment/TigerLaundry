@@ -59,6 +59,13 @@ getSVG = (elem, width, height, margin) ->
 # returns:
 #   the svg object, so it can be further manipulated
 drawGraph = (elem, figures) ->
+    $_elem = $(elem)
+    $_elem.empty()
+    facility_id = parseInt($_elem.attr("facility-id"))
+    data = $_elem.data("data")
+    if not data
+        data = getData(facility_id)
+        $_elem.data({data: data})
     # dimensions for the graph
     margin = getMargins()
     width  = getWidth(elem)
@@ -91,25 +98,18 @@ drawGraph = (elem, figures) ->
         .y1( (d) -> y(d.washers + d.driers) )
         .interpolate("monotone")
 
-    facility_id = parseInt(elem.getAttribute("facility-id"))
-    data = getData(facility_id)
 
     x.domain(d3.extent(data, (d) -> d.date))
     y.domain([0, 100])
 
-    # draw the axes
-    svg.append("g")
-        .attr("class", "x axis")
-        .attr("transform", "translate(0," + height + ")")
-        .call(xAxis)
-    
     # draw the figures
     for fig in figures
         svg.append("path")
             .datum(data)
             .attr("class", fig.class)
             .attr("d", fig.getFig(x, y, width, height))
-    svg
+    # Redraw this if the window is resized
+    $(window).resize(() -> drawGraph(elem, figures))
 
 # ######### GRAPHING FUNCTIONS ######### #
 
