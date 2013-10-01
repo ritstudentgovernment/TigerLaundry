@@ -43,6 +43,8 @@ gem 'bootstrap-sass-rails'
 
 gem 'haml-rails'
 
+gem 'd3-rails'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
 

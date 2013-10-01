@@ -1,3 +1,50 @@
 // Place all the styles related to the Facilities controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+$washersLineColor: steelblue;
+$washersAreaColor: rgba(41,123,255, 0.4);
+$driersLineColor:  orange;
+$driersAreaColor:  rgba(255, 173, 41, 0.4);
+$averageLineColor: purple;
+$averageAreaColor: #A95CFA;
+
+.axis path,
+.axis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+}
+
+.x.axis path {
+    display: none;
+}
+
+.line {
+    fill: none;
+    stroke-width: 2px;
+}
+
+.line-washers {
+    stroke: $washersLineColor;
+}
+
+.line-driers {
+    stroke: $driersLineColor;
+}
+
+.line-average {
+    stroke: $averageLineColor;
+}
+
+.area-washers {
+    fill: $washersAreaColor;
+}
+
+.area-driers {
+    fill: $driersAreaColor;
+}
+
+.area-average {
+    fill: $averageAreaColor;
+}

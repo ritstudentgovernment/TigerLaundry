@@ -62,6 +62,31 @@ class SubmissionsController < ApplicationController
     end
   end
 
+  # GET /facilities/1/submissions/limited.json
+  # Params expected:
+  #   hours: integer - default 24, how many hours of submissions to get
+  def limited
+    hours = params[:hours].to_i
+    if not hours
+      hours = 12
+    end
+    hours = hours.hours.ago
+    @submissions = Submission.where("facility_id = ? AND created_at > ?",
+                                    params[:facility_id], hours)
+    ## REMOVE STUFF BELOW ME
+    @submissions = []
+    rolling_washers = rand(50)+25
+    rolling_driers  = 50
+    (1..6).each do |n|
+      rolling_washers = [10, rolling_washers + rand(30)-15].max
+      rolling_driers  = [10, rolling_driers + rand(30)-15].max
+      @submissions << Submission.new(created_at: n.hours.ago,
+                                     washers: rolling_washers,
+                                     driers: rolling_driers,
+                                     facility_id: params[:facility_id])
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_facility
