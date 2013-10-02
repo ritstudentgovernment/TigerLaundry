@@ -92,14 +92,6 @@ drawGraph = (elem, figures) ->
 drawAverageArea = (elem) ->
     figures = []
     figures.push({
-        class: "line line-average"
-        getFig: (x, y, width, height) ->
-            d3.svg.line()
-              .x( (d) -> x(d.date) )
-              .y( (d) -> y((d.driers + d.washers)/2) )
-              .interpolate("monotone")
-    })
-    figures.push({
         class: "area area-average"
         getFig: (x, y, width, height) ->
             d3.svg.area()

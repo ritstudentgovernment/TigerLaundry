@@ -9,14 +9,34 @@
     .panel.panel-default
       .panel-body
         .row
-          %b.col-md-2.text-right Name:
-          %div.col-md-10= @facility.name
+          %b.col-md-4.text-right Name:
+          %div.col-md-8= @facility.name
         .row
-          %b.col-md-2.text-right Washers:
-          %div.col-md-10= @facility.washers
+          %b.col-md-4.text-right Washers in use:
+          %div.col-md-8
+            = @facility.last_submission.washers.to_s + "%"
+            of
+            = @facility.washers
         .row
-          %b.col-md-2.text-right Driers:
-          %div.col-md-10= @facility.driers
+          %b.col-md-4.text-right Driers in use:
+          %div.col-md-8
+            = @facility.last_submission.driers.to_s + "%"
+            of
+            = @facility.driers
+        .row
+          .col-md-11.col-md-offset-1
+            %small
+              = time_ago_in_words(@facility.last_submission.created_at)
+              ago
+        .row
+          .col-md-12
+            .btn-group
+              = link_to "New Submission",
+                        new_facility_submission_path(@facility),
+                        class: "btn btn-primary"
+              = link_to "Show Submissions",
+                        facility_submissions_path(@facility),
+                        class: "btn btn-default"
 
 .btn-group
   = link_to 'Edit', edit_facility_path(@facility), class: "btn btn-default"
