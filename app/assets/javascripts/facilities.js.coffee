@@ -15,8 +15,8 @@ getMargins = () ->
         right:  10
     }
 
-getWidth  = (elem) -> $(elem).width()
-getHeight = (elem) -> Math.floor(getWidth(elem)/3)
+getWidth  = () -> 500
+getHeight = () -> Math.floor(getWidth()/3)
 
 # Get the submission data for the given facility_id
 # returns an array of objects:
@@ -44,9 +44,12 @@ getData   = (facility_id) ->
 
 # Get an SVG object with the dimensions given
 getSVG = (elem, width, height, margin) ->
+    width = width + margin.left + margin.right
+    height = height + margin.top + margin.bottom
     d3.select(elem).append("svg")
-          .attr("width", width + margin.left + margin.right)
-          .attr("height", height + margin.top + margin.bottom)
+          .attr("viewBox", "0 0 " + width + " " + height)
+          .attr("width", "100%")
+          .attr("height","100%")
         .append("g")
           .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
 
@@ -56,48 +59,22 @@ getSVG = (elem, width, height, margin) ->
 #   figures: An array of objects, each object being
 #       class: "<html class>"
 #       getFig: (x, y, width, height) -> figure
-# returns:
-#   the svg object, so it can be further manipulated
 drawGraph = (elem, figures) ->
     $_elem = $(elem)
     $_elem.empty()
     facility_id = parseInt($_elem.attr("facility-id"))
-    data = $_elem.data("data")
-    if not data
-        data = getData(facility_id)
-        $_elem.data({data: data})
+    data = getData(facility_id)
     # dimensions for the graph
     margin = getMargins()
-    width  = getWidth(elem)
-    height = getHeight(elem)
+    width  = getWidth()
+    height = getHeight()
 
     x = d3.time.scale().range([0, width])
     y = d3.scale.linear().range([height, 0])
     xAxis = d3.svg.axis().scale(x).orient("bottom")
     yAxis = d3.svg.axis().scale(y).orient("left")
-    
+
     svg = getSVG(elem, width, height, margin)
-    
-    washersLine = d3.svg.line()
-        .x( (d) -> x(d.date) )
-        .y( (d) -> y(d.washers) )
-        .interpolate("monotone")
-    washersArea = d3.svg.area()
-        .x( (d) -> x(d.date) )
-        .y0( height )
-        .y1( (d) -> y(d.washers) )
-        .interpolate("monotone")
-
-    driersLine = d3.svg.line()
-        .x( (d) -> x(d.date)  )
-        .y( (d) -> y(d.washers + d.driers))
-        .interpolate("monotone")
-    driersArea = d3.svg.area()
-        .x( (d) -> x(d.date) )
-        .y0( (d) -> y(d.washers) )
-        .y1( (d) -> y(d.washers + d.driers) )
-        .interpolate("monotone")
-
 
     x.domain(d3.extent(data, (d) -> d.date))
     y.domain([0, 100])
@@ -108,8 +85,6 @@ drawGraph = (elem, figures) ->
             .datum(data)
             .attr("class", fig.class)
             .attr("d", fig.getFig(x, y, width, height))
-    # Redraw this if the window is resized
-    $(window).resize(() -> drawGraph(elem, figures))
 
 # ######### GRAPHING FUNCTIONS ######### #
 
