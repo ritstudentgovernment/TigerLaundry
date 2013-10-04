@@ -38,23 +38,13 @@ class Facility < ActiveRecord::Base
   # get the status of the given number
   # returns either :full, :almost_full, or :open
   def get_status(n)
-    ret = :open
-    if is_full? n
-      ret = :full
-    elsif is_almost_full? n
-      ret = :almost_full
+    if n >= 95
+      return :full
+    elsif n >= 75
+      return :almost_full
+    else
+      return :open
     end
-    return ret
   end
   
-  # does this indicate washers / driers are full?
-  def is_full?(n)
-    n >= 95
-  end
-  
-  # does this indicate washers / driers are almost full?
-  def is_almost_full?(n)
-    75 <= n and n < 95
-  end
-
 end
