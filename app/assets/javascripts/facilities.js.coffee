@@ -9,14 +9,19 @@
 
 getMargins = () ->
   return {
-    top:    15
-    left:    5
-    bottom: 20
-    right:  10
+    top:    10
+    left:   40
+    bottom: 30
+    right:  20
   }
 
 getWidth  = () -> 500
-getHeight = () -> Math.floor(getWidth()/3)
+getHeight = () -> Math.floor(getWidth()*(9/16))
+
+shouldDrawXAxis = (elem) ->
+  $(elem).hasClass("draw-xaxis")
+shouldDrawYAxis = (elem) ->
+  $(elem).hasClass("draw-yaxis")
 
 # Get the submission data for the given facility_id
 # returns an array of objects:
@@ -56,12 +61,16 @@ getSVG = (elem, width, height, margin) ->
 # Draw a generic graph
 # params:
 #   elem: the element container to draw in
-#   figures: An array of objects, each object being
+#         if elem has a class draw-xaxis and/or draw-yaxis, it will draw the respective axes
+#   figures: An array of objects, each object having attributes
 #     class: "<html class>"
 #     getFig: (x, y, width, height) -> figure
 drawGraph = (elem, figures) ->
   $_elem = $(elem)
   $_elem.empty()
+  drawXAxis = shouldDrawXAxis($_elem)
+  drawYAxis = shouldDrawYAxis($_elem)
+
   facility_id = parseInt($_elem.attr("facility-id"))
   data = getData(facility_id)
   # dimensions for the graph
@@ -69,10 +78,16 @@ drawGraph = (elem, figures) ->
   width  = getWidth()
   height = getHeight()
 
+  # set the element's height to avoid Chrome getting greedy w/ it
+  setHeight = () ->
+    $_elem.css "height", Math.floor( $_elem.width()*(height/width) )
+  setHeight()
+  $(window).resize(setHeight)
+
   x = d3.time.scale().range([0, width])
   y = d3.scale.linear().range([height, 0])
-  xAxis = d3.svg.axis().scale(x).orient("bottom")
-  yAxis = d3.svg.axis().scale(y).orient("left")
+  xAxis = d3.svg.axis().scale(x).orient("bottom").ticks(d3.time.hours, 1).tickFormat(d3.time.format("%I%p"))
+  yAxis = d3.svg.axis().scale(y).orient("left").tickValues([0, 20, 40, 60, 80, 100]).tickFormat((d) -> d + "%")
 
   svg = getSVG(elem, width, height, margin)
 
@@ -85,6 +100,17 @@ drawGraph = (elem, figures) ->
       .datum(data)
       .attr("class", fig.class)
       .attr("d", fig.getFig(x, y, width, height))
+  
+  # draw the axes
+  if drawXAxis
+    svg.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0,"+ height + ")")
+      .call(xAxis)
+  if drawYAxis
+    svg.append("g")
+      .attr("class", "y axis")
+      .call(yAxis)
 
 # ######### GRAPHING FUNCTIONS ######### #
 
