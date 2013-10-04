@@ -1,2 +1,11 @@
-@import "twitter/bootstrap";
-@import "facilities.css.scss"
+/*
+*= require_self
+*= require twitter/bootstrap
+*= require facilities.css.scss
+*= require slider.css
+*/
+
+.slider {
+  width: 100% !important;
+  max-width: 600px;
+}

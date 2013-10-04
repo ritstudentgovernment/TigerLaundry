@@ -8,12 +8,20 @@
   = f.hidden_field :facility_id, value: @facility.id
   .form-group
     = f.label :washers, class: "control-label col-md-2"
-    .col-md-10
-      = f.number_field :washers, class: "form-control", placeholder: "Washers"
+    .col-md-6
+      = f.number_field :washers, class: "tl-slider tl-slider-machinestatus", :"value-holder" => "#washersSliderValHolder"
+    .col-md-4
+      -# value of the slider is inserted into this span
+      %span#washersSliderValHolder.tl-slider-value> 0
+      \% full
   .form-group
     = f.label :driers, class: "control-label col-md-2"
-    .col-md-10
-      = f.number_field :driers, class: "form-control", placeholder: "Driers"
+    .col-md-6
+      = f.number_field :driers, class: "tl-slider tl-slider-machinestatus", :"value-holder" => "#driersSliderValHolder"
+    .col-md-4
+      -# value of the slider is inserted into this span
+      %span#driersSliderValHolder.tl-slider-value> 0
+      \% full
   .form-group
     .col-md-offset-2.col-md-10
       = f.submit 'Save', class: "btn btn-primary"
