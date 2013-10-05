@@ -1,208 +1,248 @@
-# Place all the behaviors and hooks related to the matching controller here.
-# All this logic will automatically be available in application.js.
-# You can use CoffeeScript in this file: http://coffeescript.org/
-#
 #= require d3
 
+# HOW TO GET A GRAPH:
+# 
+# Make a div and place the .facility-graph class on it.
+# If axes are desired, also place the .draw-xaxis or .draw-yaxis classes
+# Default graph is an average-area graph (averages washers + driers)
+# To get a line graph, include the class .facility-graph-line
+# To get a stacked area graph, include the class .facility-graph-stacked-area
 
-# ########### HELPER FUNCTIONS FOR GRAPHING ############### #
+# An abstract class defining a Graph
+# Instance variables:
+#   @elem   -> the DOM element
+#   @$_elem -> the jQuery element
+#   @facility_id -> the id of this facility
+#   @height -> the height (of the viewBox), int
+#   @width  -> the width (of the viewBox), int
+#   @margin -> object with the margin values
+#   @x      -> the x-axis scaling function (pass it data, it gives you pixels)
+#   @y      -> the y-axis scaling function
+#   @svg    -> a reference to the d3
+#   @xAxis  -> the object that draws the x-axis
+#   @yAxis  -> the object that draws the y-axis
+class Graph
 
-getMargins = () ->
-  return {
-    top:    10
-    left:   40
-    bottom: 30
-    right:  20
-  }
+  # Construct this Graph and associate this
+  # pure-javascript DOM element with it
+  # params:
+  #   elem - a pure DOM element
+  constructor: (elem) ->
+    @elem = elem
+    @$_elem = $(elem)
+    @facility_id = @$_elem.attr("facility-id")
+    @setDims()
+    @setupResizing()
+    @setData()
+    @setAxes()
+    @setSVG()
 
-getWidth  = () -> 500
-getHeight = () -> Math.floor(getWidth()*(9/16))
+  # sets the @width and @height variables
+  setDims: () ->
+    @setMargin()
+    @setHeightWidth()
 
-shouldDrawXAxis = (elem) ->
-  $(elem).hasClass("draw-xaxis")
-shouldDrawYAxis = (elem) ->
-  $(elem).hasClass("draw-yaxis")
+  # sets the @margin variable, accounting for axes
+  setMargin: () ->
+    @margin = {
+      top:    if @shouldDrawYAxis() then 20 else 5
+      right:  5
+      bottom: if @shouldDrawXAxis() then 30 else 5
+      left:   if @shouldDrawYAxis() then 70 else 5
+    }
 
-# Get the submission data for the given facility_id
-# returns an array of objects:
-# [ {date: date, washers: int, driers: int},  ... ]
-getData   = (facility_id) ->
-  ret = []
-  path = "/facilities/" + facility_id + "/submissions/limited.json"
-  parseDate = d3.time.format("%Y-%m-%d %H:%M:%S UTC").parse
+  setHeightWidth: () ->
+    @width  = 500
+    @height = Math.floor(@width*(9/16)) # sets a 16:9 ViewBox ratio
 
-  $.ajax(path, {
-    async: false
-    accepts: "application/json"
-  }).done( (data) ->
-    # sanity check to make sure data is parsed
-    if (data instanceof String)
-      data = JSON.parse(data)
-    for datum in data
-      ret.push({
-        date:    parseDate(String(datum[0]))
-        washers: datum[1]
-        driers:  datum[2]
-      })
-  )
-  ret
+  setAxes: () ->
+    @setXAxis()
+    @setYAxis()
 
-# Get an SVG object with the dimensions given
-getSVG = (elem, width, height, margin) ->
-  width = width + margin.left + margin.right
-  height = height + margin.top + margin.bottom
-  d3.select(elem).append("svg")
-      .attr("viewBox", "0 0 " + width + " " + height)
-      .attr("width", "100%")
-      .attr("height","100%")
-    .append("g")
-      .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+  setXAxis: () ->
+    @x = d3.time.scale().range [0, @width]
+    @xAxis = d3.svg.axis()
+               .scale(@x)
+               .orient("bottom")
+               .ticks(d3.time.hours, 1) # make a tick mark every hour
+               .tickFormat(d3.time.format("%I%p")) # make a tick look like 09PM
+    @x.domain(d3.extent(@data, (d) -> d.date))
 
-# Draw a generic graph
-# params:
-#   elem: the element container to draw in
-#         if elem has a class draw-xaxis and/or draw-yaxis, it will draw the respective axes
-#   figures: An array of objects, each object having attributes
-#     class: "<html class>"
-#     getFig: (x, y, width, height) -> figure
-drawGraph = (elem, figures) ->
-  $_elem = $(elem)
-  $_elem.empty()
-  drawXAxis = shouldDrawXAxis($_elem)
-  drawYAxis = shouldDrawYAxis($_elem)
+  setYAxis: () ->
+    @y = d3.scale.linear().range([@height, 0])
+    @yAxis = d3.svg.axis()
+               .scale(@y)
+               .orient("left")
+               .tickValues([0, 20, 40, 60, 80, 100]) # put ticks every 20%
+               .tickFormat((d) -> d + "%") # make the ticks look like percents
+    @y.domain [0, 100]
 
-  facility_id = parseInt($_elem.attr("facility-id"))
-  data = getData(facility_id)
-  # dimensions for the graph
-  margin = getMargins()
-  width  = getWidth()
-  height = getHeight()
+  # set up a callback so the @elem (wrapping the svg) will have a
+  # limited height. fixes chrome being greedy about height
+  setupResizing: () ->
+    elem = @$_elem
+    setHeight = () ->
+      elem.css "height", Math.floor($(elem).width()*(@height/@width))
+    setHeight()
+    $(window).resize setHeight
 
-  # set the element's height to avoid Chrome getting greedy w/ it
-  setHeight = () ->
-    $_elem.css "height", Math.floor( $_elem.width()*(height/width) )
-  setHeight()
-  $(window).resize(setHeight)
+  # Set the submission data, @data to an array of objects:
+  # [ {date: date, washers: int, driers: int},  ... ]
+  setData: () ->
+    data = []
+    path = "/facilities/#{@facility_id}/submissions/limited.json"
+    parseDate = d3.time.format("%Y-%m-%d %H:%M:%S UTC").parse
 
-  x = d3.time.scale().range([0, width])
-  y = d3.scale.linear().range([height, 0])
-  xAxis = d3.svg.axis().scale(x).orient("bottom").ticks(d3.time.hours, 1).tickFormat(d3.time.format("%I%p"))
-  yAxis = d3.svg.axis().scale(y).orient("left").tickValues([0, 20, 40, 60, 80, 100]).tickFormat((d) -> d + "%")
+    $.ajax(path, {async: false, accepts: "application/json"})
+    .done( (json_data) ->
+      # sanity check to make sure data is parsed
+      if json_data instanceof String
+        json_data = JSON.parse json_data
+      for datum in json_data
+        data.push({
+          date:    parseDate String(datum[0])
+          washers: datum[1]
+          driers:  datum[2]
+        })
+    )
+    @data = data
 
-  svg = getSVG(elem, width, height, margin)
+  # set the @svg object with the appropriate viewbox, and
+  # make it scale to fill the size of the container
+  setSVG: () ->
+    width = @width + @margin.left + @margin.right
+    height = @height + @margin.top + @margin.bottom
+    @svg = d3.select(@elem).append("svg")
+        .attr("viewBox", "0 0 #{width} #{height}")
+        .attr("width", "100%")
+        .attr("height","100%")
+      .append("g")
+        .attr("transform", "translate(#{@margin.left}, #{@margin.top})")
 
-  x.domain(d3.extent(data, (d) -> d.date))
-  y.domain([0, 100])
+  shouldDrawXAxis: () ->
+    @$_elem.hasClass "draw-xaxis"
 
-  # draw the figures
-  for fig in figures
-    svg.append("path")
-      .datum(data)
-      .attr("class", fig.class)
-      .attr("d", fig.getFig(x, y, width, height))
+  shouldDrawYAxis: () ->
+    @$_elem.hasClass "draw-yaxis"
+
+  # Draw the graph!
+  graph: () ->
+    @drawFigures()
+    @drawAxes()
+
+  # IMPLEMENT THIS IN SUBCLASSES!
+  drawFigures: () ->
+    null
+
+  drawAxes: () ->
+    if @shouldDrawXAxis()
+      @svg.append("g")
+        .attr("class", "x axis")
+        .attr("transform", "translate(0,"+ @height + ")")
+        .call(@xAxis)
+    if @shouldDrawYAxis()
+      @svg.append("g")
+          .attr("class", "y axis")
+          .call(@yAxis)
+        .append("text")
+          .attr("transform", "rotate(-90)")
+          .attr("y", -50)
+          .attr("x", -80)
+          .style("text-anchor", "end")
+          .style("font-size", "12pt")
+          .text("Percent In Use")
+
+# ########### Concrete implementations of Graphs ############### #
+
+class AverageAreaGraph extends Graph
   
-  # draw the axes
-  if drawXAxis
-    svg.append("g")
-      .attr("class", "x axis")
-      .attr("transform", "translate(0,"+ height + ")")
-      .call(xAxis)
-  if drawYAxis
-    svg.append("g")
-      .attr("class", "y axis")
-      .call(yAxis)
-
-# ######### GRAPHING FUNCTIONS ######### #
-
-# Draw an area graph of average values (graph of average washer/dryer)
-drawAverageArea = (elem) ->
-  figures = []
-  figures.push({
-    class: "area area-average"
-    getFig: (x, y, width, height) ->
-      d3.svg.area()
+  drawFigures: () ->
+    x = @x
+    y = @y
+    avgArea = d3.svg.area()
         .x( (d) -> x(d.date) )
-        .y0( height )
+        .y0( @height )
         .y1( (d) -> y((d.washers + d.driers)/2))
         .interpolate("monotone")
-  })
-  drawGraph(elem, figures)
+    @svg.append("path")
+      .datum(@data)
+       .attr("class", "area area-average")
+       .attr("d", avgArea)
 
+class LineGraph extends Graph
 
-# Draw a strict line graph
-drawLine = (elem) ->
-  figures = []
-  figures.push({
-    class: "line line-washers"
-    getFig: (x, y, width, height) ->
-      d3.svg.line()
+  drawFigures: () ->
+    x = @x
+    y = @y
+    washersLine = d3.svg.line()
         .x( (d) -> x(d.date) )
         .y( (d) -> y(d.washers) )
         .interpolate("monotone")
-  })
-  figures.push({
-    class: "line line-driers"
-    getFig: (x, y, width, height) ->
-      d3.svg.line()
+    driersLine = d3.svg.line()
         .x( (d) -> x(d.date) )
         .y( (d) -> y(d.driers) )
         .interpolate("monotone")
-  })
-  drawGraph(elem, figures)
+    @svg.append("path")
+      .datum(@data)
+      .attr("class", "line line-washers")
+      .attr("d", washersLine)
+    @svg.append("path")
+      .datum(@data)
+      .attr("class", "line line-driers")
+      .attr("d", driersLine)
 
-# Draw a stacked graph
-drawStackedArea = (elem) ->
-  figures = []
-  # add the washers line
-  figures.push({
-    class: "line line-washers"
-    getFig: (x, y, width, height) ->
-      d3.svg.line()
+class StackedAreaGraph extends Graph
+
+  drawFigures: () ->
+    x = @x
+    y = @y
+    washersArea = d3.svg.area()
         .x( (d) -> x(d.date) )
-        .y( (d) -> y(d.washers/2) )
-        .interpolate("monotone")
-  })
-  # add the washers area
-  figures.push({
-    class: "area area-washers"
-    getFig: (x, y, width, height) ->
-      d3.svg.area()
-        .x( (d) -> x(d.date) )
-        .y0( height )
+        .y0( @height )
         .y1( (d) -> y(d.washers/2) )
         .interpolate("monotone")
-  })
-
-  # add the driers line
-  figures.push({
-    class: "line line-driers"
-    getFig: (x, y, width, height) ->
-      d3.svg.line()
-        .x( (d) -> x(d.date) )
-        .y( (d) -> y((d.driers + d.washers)/2) )
-        .interpolate("monotone")
-  })
-  # add the driers area
-  figures.push({
-    class: "area area-driers"
-    getFig: (x, y, width, height) ->
-      d3.svg.area()
+    driersArea = d3.svg.area()
         .x( (d) -> x(d.date) )
         .y0( (d) -> y(d.washers/2) )
         .y1( (d) -> y((d.washers + d.driers)/2) )
         .interpolate("monotone")
-  })
-
-  drawGraph(elem, figures)
-
+    washersLine = d3.svg.line()
+        .x( (d) -> x(d.date) )
+        .y( (d) -> y(d.washers/2) )
+        .interpolate("monotone")
+    driersLine = d3.svg.line()
+        .x( (d) -> x(d.date) )
+        .y( (d) -> y((d.driers + d.washers)/2) )
+        .interpolate("monotone")
+    @svg.append("path")
+      .datum(@data)
+      .attr("class", "area area-washers")
+      .attr("d", washersArea)
+    @svg.append("path")
+      .datum(@data)
+      .attr("class", "area area-driers")
+      .attr("d", driersArea)
+    @svg.append("path")
+      .datum(@data)
+      .attr("class", "line line-washers")
+      .attr("d", washersLine)
+    @svg.append("path")
+      .datum(@data)
+      .attr("class", "line line-driers")
+      .attr("d", driersLine)
 
 drawAllGraphs = () ->
   for graph in $(".facility-graph")
-    graph = graph
-    facility_id = graph.getAttribute("facility-id")
-    drawAverageArea(graph)
+    $_graph = $(graph)
+    if $_graph.hasClass("facility-graph-stacked-area")
+      g = new StackedAreaGraph(graph)
+    else if $_graph.hasClass("facility-graph-line")
+      g = new LineGraph(graph)
+    else
+      g = new AverageAreaGraph(graph)
+    g.graph()
 
-# With turbolinks enabled, both of these have to be here
-# to ensure that drawAllGraphs is fired on page changes
+  # With turbolinks enabled, both of these have to be here
+  # to ensure that drawAllGraphs is fired on page changes
 document.addEventListener("page:load", drawAllGraphs)
 $(document).ready(drawAllGraphs)
