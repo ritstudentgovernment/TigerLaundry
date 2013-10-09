@@ -1,0 +1,13 @@
+%h1.text-center All Users
+
+.row
+  .col-md-12
+    - @users.each do |user|
+      .panel.panel-default
+        .panel-heading
+          = render 'shared/username', user: user
+        .panel-body
+          .row
+            .col-md-12
+              %b Submissions
+              = user.submissions.count

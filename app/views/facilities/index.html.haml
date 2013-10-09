@@ -30,16 +30,21 @@
                   %div.facility-graph{:"facility-id" => facility.id}
                 .col-md-8
                   .row
-                    .col-md-6
+                    .col-md-12
                       Washers in use: 
                       = facility.last_submission.washers.to_s + "%"
                       of
                       = facility.washers
-                .col-md-6
-                  Driers in use:
-                  = facility.last_submission.driers.to_s + '%'
-                  of
-                  = facility.driers
+                  .row
+                    .col-md-12
+                      Driers in use:
+                      = facility.last_submission.driers.to_s + '%'
+                      of
+                      = facility.driers
+                  .row
+                    .col-md-12
+                      Reported by
+                      = render 'shared/username', user: facility.last_submission.user
               .row
                 .col-md-12
                   %small{title: facility.last_submission.created_at}

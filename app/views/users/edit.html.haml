@@ -1,0 +1,9 @@
+%h1
+  Editing
+  = @user.name
+
+= render 'form'
+
+.btn-group
+  = link_to 'Show', @user, class: "btn btn-default"
+  = link_to 'Show All', users_path, class: "btn btn-default"

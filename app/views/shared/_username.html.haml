@@ -1,0 +1,10 @@
+-# Render a user's name (with a mod or admin tag if appropriate)
+-# To use, call render 'shared/username', user: user
+- if user
+  = link_to user.name, user_path(user)
+  - if user.admin?
+    %span.label.label-primary Admin
+  - elsif user.mod?
+    %span.label.label-primary Mod
+- else
+  = "Anonymous User"

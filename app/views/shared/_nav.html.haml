@@ -1,15 +1,23 @@
-%div.navbar.navbar-default{role:"navigation"}
-  %div.navbar-header
-    %button.navbar-toggle{:type =>"button",
-                          :"data-toggle"=>"collapse",
-                          :"data-target"=>".navbar-ex1-collapse"}
-      %span.sr-only "Toggle navigation"
-      %span.icon-bar
-      %span.icon-bar
-      %span.icon-bar
-    = link_to "TigerLaundry", root_url, {class:"navbar-brand"}
-  %div.collapse.navbar-collapse.navbar-ex1-collapse
-    %ul.nav.navbar-nav
-      -# active class is only applied to the current controller's link
-      %li{class: ("active" if params[:controller] == 'facilities')}
-        = link_to "Facilities", facilities_url
+.navbar.navbar-default{role:"navigation"}
+  .container
+    .navbar-header
+      %button.navbar-toggle{:type =>"button",
+                            :"data-toggle"=>"collapse",
+                            :"data-target"=>".navbar-ex1-collapse"}
+        %span.sr-only "Toggle navigation"
+        %span.icon-bar
+        %span.icon-bar
+        %span.icon-bar
+      = link_to "TigerLaundry", root_url, {class:"navbar-brand"}
+    .collapse.navbar-collapse.navbar-ex1-collapse
+      %ul.nav.navbar-nav
+        -# active class is only applied to the current controller's link
+        %li{class: ("active" if params[:controller] == 'facilities')}
+          = link_to "Facilities", facilities_url
+        %li{class: ("active" if params[:controller] == 'users')}
+          = link_to "Users", users_url
+      %ul.nav.navbar-nav.pull-right
+        - if user_signed_in?
+          %li= link_to current_user.name, user_path(current_user)
+        - else
+          %li= link_to "Sign in with Google", user_omniauth_authorize_path(:google_oauth2)

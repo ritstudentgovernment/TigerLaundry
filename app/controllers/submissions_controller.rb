@@ -26,6 +26,9 @@ class SubmissionsController < ApplicationController
   # POST /facilities/1/submissions.json
   def create
     @submission = Submission.new(submission_params)
+    if user_signed_in?
+      @submission.user = current_user
+    end
 
     respond_to do |format|
       if @submission.save

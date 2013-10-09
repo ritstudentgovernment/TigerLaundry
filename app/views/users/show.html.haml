@@ -1,0 +1,19 @@
+%h1.text-center= @user.name
+
+.btn-group
+  = link_to 'Edit', edit_user_path(@user), class: "btn btn-default"
+
+%h2 Submissions
+.table-responsive
+  %table.table
+    %tr
+      %th Facility
+      %th Time
+      %th Washers
+      %th Driers
+    - @user.submissions.each do |submission|
+      %tr
+        %td= link_to submission.facility.name, facility_path(submission.facility)
+        %td= submission.created_at
+        %td= submission.washers
+        %td= submission.driers

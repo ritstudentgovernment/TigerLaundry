@@ -45,6 +45,12 @@ gem 'haml-rails'
 
 gem 'd3-rails'
 
+gem 'devise'
+
+gem 'omniauth'
+
+gem 'omniauth-google-oauth2'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
 
