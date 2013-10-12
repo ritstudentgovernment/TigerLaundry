@@ -47,9 +47,7 @@ gem 'd3-rails'
 
 gem 'devise'
 
-gem 'omniauth'
-
-gem 'omniauth-google-oauth2'
+gem "devise_ldap_authenticatable", :git => "git://github.com/cschiewek/devise_ldap_authenticatable.git"
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'

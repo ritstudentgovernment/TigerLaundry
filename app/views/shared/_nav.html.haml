@@ -18,6 +18,13 @@
           = link_to "Users", users_url
       %ul.nav.navbar-nav.pull-right
         - if user_signed_in?
-          %li= link_to current_user.name, user_path(current_user)
+          %li= link_to current_user.username, user_path(current_user)
+          %li
+            %a{href: destroy_user_session_path}
+              Logout
+              .glyphicon.glyphicon-log-out
         - else
-          %li= link_to "Sign in with Google", user_omniauth_authorize_path(:google_oauth2)
+          %li
+            %a{href: new_user_session_path}
+              %span.glyphicon.glyphicon-log-in
+              Login
