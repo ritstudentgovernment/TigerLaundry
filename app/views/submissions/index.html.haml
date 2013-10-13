@@ -20,12 +20,15 @@
           %td No Facility
         %td
           .btn-group
-            = link_to 'Show', facility_submission_path(@facility, submission), class: "btn btn-default"
-            = link_to 'Edit', edit_facility_submission_path(@facility, submission), class: "btn btn-default"
-            = link_to 'Destroy', facility_submission_path(@facility, submission),
-                :method => :delete,
-                :data => { :confirm => 'Are you sure?' },
-                class: "btn btn-default"
+            - if can? :read, submission
+              = link_to 'Show', facility_submission_path(@facility, submission), class: "btn btn-default"
+            - if can? :update, submission
+              = link_to 'Edit', edit_facility_submission_path(@facility, submission), class: "btn btn-default"
+            - if can? :destroy, submission
+              = link_to 'Destroy', facility_submission_path(@facility, submission),
+                  :method => :delete,
+                  :data => { :confirm => 'Are you sure?' },
+                  class: "btn btn-default"
 
 %br
 

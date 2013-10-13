@@ -5,21 +5,25 @@ class SubmissionsController < ApplicationController
   # GET facilities/1/submissions
   # GET facilities/1/submissions.json
   def index
+    authorize! :read, Submission
     @submissions = Facility.find(params[:facility_id]).submissions
   end
 
   # GET /facilities/1/submissions/1
   # GET /facilities/1/submissions/1.json
   def show
+    authorize! :read, @submission
   end
 
   # GET /facilities/1/submissions/new
   def new
+    authorize! :create, Submission
     @submission = Submission.new
   end
 
   # GET /facilities/1/submissions/1/edit
   def edit
+    authorize! :update, @submission
   end
 
   # POST /facilities/1/submissions
@@ -29,6 +33,7 @@ class SubmissionsController < ApplicationController
     if user_signed_in?
       @submission.user = current_user
     end
+    authorize! :create, @submission
 
     respond_to do |format|
       if @submission.save
@@ -44,6 +49,7 @@ class SubmissionsController < ApplicationController
   # PATCH/PUT /facilities/1/submissions/1
   # PATCH/PUT /facilities/1/submissions/1.json
   def update
+    authorize! :update, @submission
     respond_to do |format|
       if @submission.update(submission_params)
         format.html { redirect_to facility_submission_path(@facility, @submission), notice: 'Submission was successfully updated.' }
@@ -58,6 +64,7 @@ class SubmissionsController < ApplicationController
   # DELETE /facilities/1/submissions/1
   # DELETE /facilities/1/submissions/1.json
   def destroy
+    authorize! :destroy, @submission
     @submission.destroy
     respond_to do |format|
       format.html { redirect_to facility_submissions_url(@facility) }
@@ -69,6 +76,7 @@ class SubmissionsController < ApplicationController
   # Params expected:
   #   hours: integer - default 24, how many hours of submissions to get
   def limited
+    authorize! :read, Submission
     hours = params[:hours].to_i
     if not hours
       hours = 12

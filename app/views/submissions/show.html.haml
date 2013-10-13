@@ -23,5 +23,7 @@
 %br
 
 .btn-group
-  = link_to 'Edit', edit_facility_submission_path(@facility, @submission), class: "btn btn-default"
-  = link_to 'Show All', facility_submissions_path(@facility), class: "btn btn-default"
+  - if can? :update, @submission
+    = link_to 'Edit', edit_facility_submission_path(@facility, @submission), class: "btn btn-default"
+  - if can? :read, Submission
+    = link_to 'Show All', facility_submissions_path(@facility), class: "btn btn-default"

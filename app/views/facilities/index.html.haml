@@ -53,9 +53,11 @@
           .row
             .col-md-12
               .btn-group
-                = link_to 'New Submission',
-                          new_facility_submission_path(facility),
-                          class: "btn btn-default"
-                = link_to 'All Submissions',
-                          facility_submissions_path(facility),
-                          class: "btn btn-default"
+                - if can? :create, Submission
+                  = link_to 'New Submission',
+                            new_facility_submission_path(facility),
+                            class: "btn btn-default"
+                - if can? :read, Submission
+                  = link_to 'All Submissions',
+                            facility_submissions_path(facility),
+                            class: "btn btn-default"
