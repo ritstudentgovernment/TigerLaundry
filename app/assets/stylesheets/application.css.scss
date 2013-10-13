@@ -1,6 +1,6 @@
 /*
-*= require_self
 *= require twitter/bootstrap
+*= require_self
 *= require facilities.css.scss
 *= require slider.css
 */
@@ -18,4 +18,20 @@ $RITwhite  : #FFFFFF;
 .slider {
   width: 100% !important;
   max-width: 600px;
+}
+
+
+
+/*
+ * Hack to control what links work collapsed / uncollapsed
+ */
+@media (min-width: 768px) {
+  .navbar-collapse-only {
+    display: none !important;
+  }
+}
+@media (max-width: 767px) {
+  .navbar-collapse-hidden {
+    display: none !important;
+  }
 }

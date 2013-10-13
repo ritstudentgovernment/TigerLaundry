@@ -18,13 +18,31 @@
           = link_to "Users", users_url
       %ul.nav.navbar-nav.pull-right
         - if user_signed_in?
-          %li= link_to current_user.username, user_path(current_user)
+          %li= link_to current_user.name, user_path(current_user)
           %li
             %a{href: destroy_user_session_path}
               Logout
               .glyphicon.glyphicon-log-out
         - else
-          %li
-            %a{href: new_user_session_path}
-              %span.glyphicon.glyphicon-log-in
-              Login
+          -# IF THE NAVBAR IS COLLAPSED
+          %li.dropdown.navbar-collapse-hidden
+            %a.dropdown-toggle{:href => "#", :"data-toggle" => "dropdown"}
+              Sign In
+              %span.glyphicon.glyphicon-chevron-down
+            .dropdown-menu{style: "padding: 15px"}
+              = form_for User.new, url: session_path(:user), html: {class: "", role: "Sign-In"} do |f|
+                .form-group
+                  = f.label :username, class: "sr-only"
+                  = f.text_field :username, class: "form-control", placeholder: "RIT Username"
+                .form-group
+                  = f.label :password, class: "sr-only"
+                  = f.password_field :password, class: "form-control", placeholder: "Password"
+                .form-group
+                  = f.label :remember_me, class: "checkbox" do
+                    = f.check_box :remember_me
+                    Remember Me
+                .form-group
+                  = f.submit "Login", class: "btn btn-primary", style: "width: 100%"
+          -# IF THE NAVBAR IS NOT COLLAPSED
+          %li.dropdown.navbar-collapse-only
+            = link_to "Sign In", session_path(:user)

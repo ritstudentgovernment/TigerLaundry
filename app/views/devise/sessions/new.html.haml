@@ -1,22 +1,26 @@
-%h1 Sign in
+%h1.text-center Sign in
 
 = form_for resource,
            as:  resource_name,
            url: session_path(resource_name),
            html:{class: "form-horizontal"} do |f|
   .form-group
-    = f.label :username, class: "control-label"
-    = f.text_field :username, class: "form-control", placeholder: "Username"
+    = f.label :username, "RIT Username", class: "control-label col-md-2"
+    .col-md-10
+      = f.text_field :username, class: "form-control", placeholder: "RIT Username"
   .form-group
-    = f.label :password, class: "control-label"
-    = f.password_field :password, class: "form-control", placeholder: "Password"
+    = f.label :password, class: "control-label col-md-2"
+    .col-md-10
+      = f.password_field :password, class: "form-control", placeholder: "Password"
   - if devise_mapping.rememberable?
     .form-group
-      .checkbox
-        %label
-          = f.check_box :remember_me
-          Remember Me
+      .col-md-10.col-md-offset-2
+        .checkbox
+          %label
+            = f.check_box :remember_me
+            Remember Me
   .form-group
-    = f.submit "Sign In", class: "btn btn-primary"
+    .col-md-10.col-md-offset-2
+      = f.submit "Sign In", class: "btn btn-primary"
 
 = render "devise/shared/links"
