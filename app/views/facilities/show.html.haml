@@ -45,5 +45,12 @@
                           class: "btn btn-default"
 
 .btn-group
-  = link_to 'Edit', edit_facility_path(@facility), class: "btn btn-default"
-  = link_to 'Show All', facilities_path, class: "btn btn-default"
+  - if can? :update, @facility
+    = link_to 'Edit', edit_facility_path(@facility), class: "btn btn-default"
+  - if can? :destroy, @facility
+    = link_to 'Destroy', facility_path(@facility),
+      :method => :delete,
+      :data => { :confirm => 'Are you sure?' },
+      class: "btn btn-default"
+  - if can? :read, Facility
+    = link_to 'Show All', facilities_path, class: "btn btn-default"

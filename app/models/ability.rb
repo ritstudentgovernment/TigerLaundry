@@ -5,13 +5,34 @@ class Ability
     user ||= User.new
 
     # Submission permissions
+    #        c r u d
+    # Admin |x|x|x|x|
+    # Mod   |x|x|x|x|
+    # User  |x|x| |*|
+    # Guest |x|x| | |
+    # * own
     can :create, Submission
     can :read,   Submission
-    if user.mod?
+    if user.mod? # if mod or admin
       can :update, Submission
       can :destroy, Submission
-    elsif not user.new_record?
+    elsif not user.new_record? # if not guest
       can :destroy, Submission, user_id: user.id
+    end
+
+    # Facility permissions
+    #        c r u d
+    # Admin |x|x|x|x|
+    # Mod   | |x|x| |
+    # User  | |x| | |
+    # Guest | |x| | |
+    can :read, Facility
+    if user.mod? # if mod or admin
+      can :update,  Facility
+    end
+    if user.admin?
+      can :create, Facility
+      can :destroy, Facility
     end
 
     # Define abilities for the passed in user here. For example:

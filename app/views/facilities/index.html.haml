@@ -6,10 +6,11 @@
     %ul.nav.nav-stacked.nav-pills
       - @facilities.each do |facility|
         %li= link_to facility.name, facility_path(facility)
-      %li
-        %a{href: new_facility_path}
-          %span.glyphicon.glyphicon-plus
-          New Facility
+      - if can? :create, Facility
+        %li
+          %a{href: new_facility_path}
+            %span.glyphicon.glyphicon-plus
+            New Facility
   .col-md-9
     - @facilities.each do |facility|
       .panel.panel-default{:"facility-id" => facility.id}

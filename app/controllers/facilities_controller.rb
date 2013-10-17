@@ -4,26 +4,31 @@ class FacilitiesController < ApplicationController
   # GET /facilities
   # GET /facilities.json
   def index
+    authorize! :read, Facility
     @facilities = Facility.all
   end
 
   # GET /facilities/1
   # GET /facilities/1.json
   def show
+    authorize! :read, @facility
   end
 
   # GET /facilities/new
   def new
+    authorize! :create, Facility
     @facility = Facility.new
   end
 
   # GET /facilities/1/edit
   def edit
+    authorize! :update, @facility
   end
 
   # POST /facilities
   # POST /facilities.json
   def create
+    authorize! :create, Facility
     @facility = Facility.new(facility_params)
 
     respond_to do |format|
@@ -40,6 +45,7 @@ class FacilitiesController < ApplicationController
   # PATCH/PUT /facilities/1
   # PATCH/PUT /facilities/1.json
   def update
+    authorize! :update, @facility
     respond_to do |format|
       if @facility.update(facility_params)
         format.html { redirect_to @facility, notice: 'Facility was successfully updated.' }
@@ -54,6 +60,7 @@ class FacilitiesController < ApplicationController
   # DELETE /facilities/1
   # DELETE /facilities/1.json
   def destroy
+    authorize! :destroy, @facility
     @facility.destroy
     respond_to do |format|
       format.html { redirect_to facilities_url }
