@@ -1,11 +1,23 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
 
-one:
+admin_submission:
   washers: 1
   driers: 1
-  facility_id: 1
+  facility: :ellingson
+  user: :admin
 
-two:
+anonymous_submission:
   washers: 1
   driers: 1
-  facility_id: 2
+  facility: :ellingson
+
+full_submission:
+  washers: 100
+  driers: 100
+  facility: :gibson
+
+regular_submission:
+  washers: 20
+  driers: 20
+  facility: :gibson
+  user: :regular

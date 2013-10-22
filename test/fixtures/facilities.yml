@@ -1,13 +1,11 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
 
-one:
-  id: 1
-  washers: 1
-  driers: 1
-  name: MyString
+ellingson:
+  washers: 20
+  driers: 20
+  name: Ellingson
 
-two:
-  id: 2
-  washers: 1
-  driers: 1
-  name: MyString
+gibson:
+  washers: 8
+  driers: 8
+  name: Gibson
