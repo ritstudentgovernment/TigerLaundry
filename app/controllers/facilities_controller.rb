@@ -30,9 +30,11 @@ class FacilitiesController < ApplicationController
   def create
     authorize! :create, Facility
     @facility = Facility.new(facility_params)
+    # make sure a facility has at least 1 submission
+    submission = Submission.new(washers: 50, driers: 50, facility: @facility)
 
     respond_to do |format|
-      if @facility.save
+      if @facility.save and submission.save
         format.html { redirect_to @facility, notice: 'Facility was successfully created.' }
         format.json { render action: 'show', status: :created, location: @facility }
       else
