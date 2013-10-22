@@ -1,5 +1,5 @@
 class Facility < ActiveRecord::Base
-  has_many :submissions
+  has_many :submissions, dependent: :destroy
 
   # returns the most recent submission
   def last_submission
