@@ -37,7 +37,7 @@ class SubmissionsController < ApplicationController
 
     respond_to do |format|
       if @submission.save
-        format.html { redirect_to facility_submission_path(@facility, @submission), notice: 'Submission was successfully created.' }
+        format.html { redirect_to facility_path(@facility), notice: 'Submission was successfully created.' }
         format.json { render action: 'show', status: :created, location: @submission }
       else
         format.html { render action: 'new' }

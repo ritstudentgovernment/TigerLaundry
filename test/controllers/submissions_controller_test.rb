@@ -29,8 +29,7 @@ class SubmissionsControllerTest < ActionController::TestCase
                          washers: @submission.washers }
     end
 
-    assert_redirected_to facility_submission_path(assigns(:facility),
-                                                  assigns(:submission))
+    assert_redirected_to facility_path(assigns(:facility))
   end
 
   test "should show submission" do
