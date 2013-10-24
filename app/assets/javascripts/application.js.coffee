@@ -32,6 +32,9 @@
 #   elem - the input element to turn into a slider
 setupSlider = (elem) ->
   slider = $(elem)
+  oldVal = parseInt(slider.val())
+  if not oldVal
+    oldVal = 0
 
   valElem = $(slider.attr("value-holder"))
   updateSlider = (ev) ->
@@ -52,10 +55,10 @@ setupSlider = (elem) ->
       min: 0,
       max: 100,
       tooltip: "hide",
-      value: 0
+      value: oldVal
     })
   else
-    slider.slider({value: 0})
+    slider.slider({value: oldVal})
 
 # set .tl-slider class to be sliders
 setupSliders = () ->
