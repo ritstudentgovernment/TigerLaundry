@@ -9,4 +9,5 @@
   %body
     = render "shared/nav"
     %div.container
+      = render "shared/flash_messages", flash: flash
       = yield
