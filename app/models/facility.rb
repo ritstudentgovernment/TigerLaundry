@@ -19,8 +19,13 @@ class Facility < ActiveRecord::Base
   end
 
   # Gets the most severe status of washers and driers
-  # from least to greatest in order of severity: :open, :almost_full, :full
+  # from least to greatest in order of severity:
+  #      :unknown, :open, :almost_full, :full
   def status
+    if not last_submission
+      return :unknown
+    end
+    
     w_s = washers_status
     d_s = driers_status
     

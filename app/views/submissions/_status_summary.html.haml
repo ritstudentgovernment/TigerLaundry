@@ -1,0 +1,35 @@
+-# This abstracts making summaries of the last submissions
+-# Params:
+-#   submission    - the submission to summarize
+-# Example:
+-#   Washers in use: 25% of 10
+-# Driers in use:  23% of 12
+-#   Submitted by Foo
+-#   3 hours ago
+
+- if submission
+  .row
+    %b.col-md-4.text-right Washers in use:
+    .col-md-8
+      = submission.washers.to_s + "%"
+      of
+      = submission.facility.washers
+  .row
+    %b.col-md-4.text-right Driers in use:
+    .col-md-8
+      = submission.driers.to_s + '%'
+      of
+      = submission.facility.driers
+  .row
+    %b.col-md-4.text-right Reported By:
+    .col-md-8
+      = render 'shared/username', user: submission.user
+  .row
+    .col-md-8.col-md-offset-4
+      %small{title: submission.created_at}
+        = time_ago_in_words(submission.created_at)
+        ago
+- else
+  .row
+    .col-md-12
+      No submission available

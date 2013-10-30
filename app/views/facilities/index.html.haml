@@ -30,27 +30,8 @@
                 .col-md-4
                   %div.facility-graph{:"facility-id" => facility.id}
                 .col-md-8
-                  .row
-                    .col-md-12
-                      Washers in use: 
-                      = facility.last_submission.washers.to_s + "%"
-                      of
-                      = facility.washers
-                  .row
-                    .col-md-12
-                      Driers in use:
-                      = facility.last_submission.driers.to_s + '%'
-                      of
-                      = facility.driers
-                  .row
-                    .col-md-12
-                      Reported by
-                      = render 'shared/username', user: facility.last_submission.user
-              .row
-                .col-md-12
-                  %small{title: facility.last_submission.created_at}
-                    = time_ago_in_words(facility.last_submission.created_at)
-                    ago
+                  = render 'submissions/status_summary',
+                           submission: facility.last_submission
           .row
             .col-md-12
               .btn-group
