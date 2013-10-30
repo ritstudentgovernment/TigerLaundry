@@ -14,11 +14,3 @@ gleason   = Facility.create({name: 'Gleason',            washers: 22, driers: 22
 reshallA  = Facility.create({name: 'Residence Hall A',   washers: 6,  driers: 6})
 reshallB  = Facility.create({name: 'Residence Hall B',   washers: 6,  driers: 6})
 reshallC  = Facility.create({name: 'Residence Hall C',   washers: 6,  driers: 6})
-
-facilities = [gv400, ellingson, gibson, solH,
-              gleason, reshallA, reshallB, reshallC]
-
-# Add at least 1 submission to every facility
-facilities.each do |facility|
-  Submission.create({washers: 50, driers: 50, facility_id: facility.id})
-end
