@@ -81,8 +81,11 @@ class Graph
   # limited height. fixes chrome being greedy about height
   setupResizing: () ->
     elem = @$_elem
+    height = @height
+    width  = @width
     setHeight = () ->
-      elem.css "height", Math.floor($(elem).width()*(@height/@width))
+      elem.css "height", Math.floor($(elem).width()*(height/width))
+      console.log "Foo!"
     setHeight()
     $(window).resize setHeight
 
