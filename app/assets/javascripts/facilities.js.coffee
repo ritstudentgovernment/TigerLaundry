@@ -85,7 +85,6 @@ class Graph
     width  = @width
     setHeight = () ->
       elem.css "height", Math.floor($(elem).width()*(height/width))
-      console.log "Foo!"
     setHeight()
     $(window).resize setHeight
 
