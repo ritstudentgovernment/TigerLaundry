@@ -88,7 +88,7 @@ class SubmissionsController < ApplicationController
     @submissions = []
     rolling_washers = rand(50)+25
     rolling_driers  = 50
-    (1..6).each do |n|
+    (0..6).each do |n|
       rolling_washers = [10, rolling_washers + rand(30)-15].max
       rolling_driers  = [10, rolling_driers + rand(30)-15].max
       @submissions << Submission.new(created_at: n.hours.ago,

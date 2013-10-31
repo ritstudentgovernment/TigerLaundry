@@ -93,7 +93,7 @@ class Graph
   setData: () ->
     data = []
     path = "/facilities/#{@facility_id}/submissions/limited.json"
-    parseDate = d3.time.format("%Y-%m-%d %H:%M:%S UTC").parse
+    parseDate = d3.time.format("%Y-%m-%d %H:%M:%S -0400").parse
 
     $.ajax(path, {async: false, accepts: "application/json"})
     .done( (json_data) ->
