@@ -1,19 +1,9 @@
 /*
-*= require twitter/bootstrap
 *= require_self
-*= require facilities.css.scss
 *= require slider.css
 */
 
-/*
- * Colors as described in the RIT identity manual.
- * http://www.rit.edu/upub/pdfs/identity_manual.pdf
- */
-$RITbrown  : #513127;
-$RITorange : #F36E21;
-$RITblack  : #000000;
-$RITgray   : #C7C3BD;
-$RITwhite  : #FFFFFF;
+@import "variables";
 
 .slider {
   width: 100% !important;
@@ -34,4 +24,30 @@ $RITwhite  : #FFFFFF;
   .navbar-collapse-hidden {
     display: none !important;
   }
+}
+
+// Bootstrap Customizations
+$link-color: $RITorange;
+
+@font-face {
+font-family: 'Open Sans';
+src: url('http://fonts.googleapis.com/css?family=Open+Sans');
+}
+
+$font-family-sans-serif: Open Sans, Helvetica, Arial, sans-serif;
+
+@import "twitter/bootstrap";
+@import "facilities.css.scss";
+
+// Good things
+a:hover {
+  text-decoration: none;
+}
+
+svg { max-height: 100%; }
+body, html {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
 }

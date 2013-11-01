@@ -2,12 +2,14 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+@import "variables";
+
 $washersLineColor: steelblue;
 $washersAreaColor: rgba(41,123,255, 0.4);
 $driersLineColor:  orange;
 $driersAreaColor:  rgba(255, 173, 41, 0.4);
 $averageLineColor: purple;
-$averageAreaColor: #A95CFA;
+$averageAreaColor: $RITorange;
 
 .axis path,
 .axis line {
@@ -48,3 +50,34 @@ $averageAreaColor: #A95CFA;
 .area-average {
     fill: $averageAreaColor;
 }
+
+.linksGraph {
+  position: relative;
+  .links {
+    position: absolute;
+    z-index: 2; 
+  }
+  .graph {
+    position: absolute;
+    z-index: 1;
+  }
+}
+
+
+
+// .svg-container {
+// display: inline-block;
+// position: relative;
+// width: 100%;
+// padding-bottom: 100%;
+// vertical-align: middle;
+// overflow: hidden;
+// }
+
+// .svg-content {
+// display: inline-block;
+// position: absolute;
+// top: 0;
+// left: 0;
+// }
+

@@ -52,7 +52,7 @@ class Graph
     }
 
   setHeightWidth: () ->
-    @width  = 500
+    @width  = @$_elem.parent().width();
     @height = Math.floor(@width*(9/16)) # sets a 16:9 ViewBox ratio
 
   setAxes: () ->
@@ -80,13 +80,18 @@ class Graph
   # set up a callback so the @elem (wrapping the svg) will have a
   # limited height. fixes chrome being greedy about height
   setupResizing: () ->
-    elem = @$_elem
-    height = @height
-    width  = @width
-    setHeight = () ->
-      elem.css "height", Math.floor($(elem).width()*(height/width))
-    setHeight()
-    $(window).resize setHeight
+    # debugger;
+    # @$_elem.parent().parent().attr('height', @height + 'px');
+    # $(@elem.parentElement).style('height', @height + 'px');
+    #setHeightWidth()
+    @$_elem.parent().css('height', @height + 'px');
+    # elem = @$_elem
+    # height = @height
+    # width  = @width
+    # setHeight = () ->
+    #   elem.css "height", Math.floor($(elem).width()*(height/width))
+    # setHeight()
+    # $(window).resize setHeight
 
   # Set the submission data, @data to an array of objects:
   # [ {date: date, washers: int, driers: int},  ... ]
@@ -115,9 +120,10 @@ class Graph
     width = @width + @margin.left + @margin.right
     height = @height + @margin.top + @margin.bottom
     @svg = d3.select(@elem).append("svg")
+        .attr("width", width + 'px')
+        .attr("height", height + 'px')
         .attr("viewBox", "0 0 #{width} #{height}")
-        .attr("width", "100%")
-        .attr("height","100%")
+        .attr("preserveAspectRatio", "xMinYMid")
       .append("g")
         .attr("transform", "translate(#{@margin.left}, #{@margin.top})")
 

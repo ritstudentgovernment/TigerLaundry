@@ -1,4 +1,4 @@
-%h1.text-center All Facilities
+%h1.text-center{style: "margin-bottom: 30px;"} All Facilities
 
 .row
   .col-md-3
@@ -13,33 +13,44 @@
             New Facility
   .col-md-9
     - @facilities.each do |facility|
-      .panel.panel-default{:"facility-id" => facility.id}
-        %div.panel-heading
-          = link_to facility.name, facility_path(facility)
-          - status = facility.status
-          - if status == :full
-            .label.label-danger Full
-          - elsif status == :almost_full
-            .label.label-warning Almost Full
-          - else
-            .label.label-success Open
-        .panel-body
-          .panel.panel-default
-            .panel-body
-              .row
-                .col-md-4
-                  %div.facility-graph{:"facility-id" => facility.id}
-                .col-md-8
-                  = render 'submissions/status_summary',
-                           submission: facility.last_submission
-          .row
-            .col-md-12
-              .btn-group
-                - if can? :create, Submission
-                  = link_to 'New Submission',
-                            new_facility_submission_path(facility),
-                            class: "btn btn-default"
-                - if can? :read, Submission
-                  = link_to 'All Submissions',
-                            facility_submissions_path(facility),
-                            class: "btn btn-default"
+      .row
+        .linksGraph{:"facility-id" => facility.id, :style => "padding-bottom: 20px;"}
+          .links
+            %h2{:style => "margin: 0px;"}
+              = link_to facility_path(facility) do
+                %strong><
+                  = facility.name.gsub(/\s+/, "")
+                Laundry
+            %span{:style => "line-height: 40px;"}Last Updated 23 Minutes Ago
+          .graph.facility-graph.svg-content{:"facility-id" => facility.id, :data => {'height' => 150, 'margin' => 0}}
+          
+      / .panel.panel-default{:"facility-id" => facility.id}
+      /   %div.panel-heading
+      /     = link_to facility.name, facility_path(facility)
+      /     - status = facility.status
+      /     - if status == :full
+      /       .label.label-danger Full
+      /     - elsif status == :almost_full
+      /       .label.label-warning Almost Full
+      /     - else
+      /       .label.label-success Open
+      /   .panel-body
+      /     .panel.panel-default
+      /       .panel-body
+      /         .row
+      /           .col-md-4
+      /             %div.facility-graph{:"facility-id" => facility.id}
+      /           .col-md-8
+      /             = render 'submissions/status_summary',
+      /                      submission: facility.last_submission
+      /     .row
+      /       .col-md-12
+      /         .btn-group
+      /           - if can? :create, Submission
+      /             = link_to 'New Submission',
+      /                       new_facility_submission_path(facility),
+      /                       class: "btn btn-default"
+      /           - if can? :read, Submission
+      /             = link_to 'All Submissions',
+      /                       facility_submissions_path(facility),
+      /                       class: "btn btn-default"
