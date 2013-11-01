@@ -16,6 +16,8 @@
           = link_to "Facilities", facilities_url
         %li{class: ("active" if params[:controller] == 'users')}
           = link_to "Users", users_url
+        %li{class: ("active" if params[:controller] == 'users')}
+          = link_to "About", about_url
       %ul.nav.navbar-nav.pull-right
         - if user_signed_in?
           %li= link_to current_user.name, user_path(current_user)

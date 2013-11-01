@@ -15,5 +15,6 @@ TigerLaundry::Application.routes.draw do
 
   # Map the root of the site to the pages controller
   root to: "pages#index"
+  get 'about', to: "pages#about"
   
 end

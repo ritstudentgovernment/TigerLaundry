@@ -21,7 +21,13 @@
                 %strong><
                   = facility.name.gsub(/\s+/, "")
                 Laundry
-            %span{:style => "line-height: 40px;"}Last Updated 23 Minutes Ago
+            %span{:style => "line-height: 40px;"}
+              - if facility.submissions.last
+                Last updated
+                = time_ago_in_words(facility.submissions.last.created_at)
+                ago
+              - else
+                No Recent Submissions
           .graph.facility-graph.svg-content{:"facility-id" => facility.id, :data => {'height' => 150, 'margin' => 0}}
           
       / .panel.panel-default{:"facility-id" => facility.id}
