@@ -99,7 +99,7 @@ class Graph
     hours = 4 # number of hours to go back
     data = []
     path = "/facilities/#{@facility_id}/submissions/limited.json?hours=" + hours
-    parseDate = d3.time.format("%Y-%m-%d %H:%M:%S -0400").parse
+    parseDate = d3.time.format("%Y-%m-%d %H:%M:%S UTC").parse
 
     $.ajax(path, {async: false, accepts: "application/json"})
     .done( (json_data) ->
@@ -113,23 +113,24 @@ class Graph
           driers:  datum[2]
         })
     )
+    # debugger;
     # add a fake data point to the biginning and end
     # which are the same size as the ones closer to the middle than them
-    old = new Date()
-    now = new Date()
-    old = new Date(old.setHours(now.getHours() - 4))
-    data.unshift({
-      date: old
-      washers: data[0].washers
-      driers:  data[0].driers
-    })
-    data.push({
-      date: now
-      washers: data[data.length-1].washers
-      driers: data[data.length-1].driers
-    })
-    for datum in data
-      console.log datum.date + ", " + datum.washers + ", " + datum.driers
+    # old = new Date()
+    # now = new Date()
+    # old = new Date(old.setHours(now.getHours() - 4))
+    # data.unshift({
+    #   date: old
+    #   washers: data[0].washers
+    #   driers:  data[0].driers
+    # })
+    # data.push({
+    #   date: now
+    #   washers: data[data.length-1].washers
+    #   driers: data[data.length-1].driers
+    # })
+    # for datum in data
+    #   console.log datum.date + ", " + datum.washers + ", " + datum.driers
     @data = data
 
   # set the @svg object with the appropriate viewbox, and
