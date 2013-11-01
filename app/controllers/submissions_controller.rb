@@ -85,6 +85,9 @@ class SubmissionsController < ApplicationController
     hours = hours.hours.ago
     @submissions = Submission.where("facility_id = ? AND created_at > ?",
                                     params[:facility_id], hours)
+    if @submissions.empty?
+      @submissions = [Submission.new(:facility_id => params[:facility_id], :washers => 0, :driers => 0, :created_at => Time.now)]
+    end
   end
 
   private
