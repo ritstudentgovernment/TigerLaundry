@@ -96,9 +96,10 @@ class Graph
   # Set the submission data, @data to an array of objects:
   # [ {date: date, washers: int, driers: int},  ... ]
   setData: () ->
+    hours = 4 # number of hours to go back
     data = []
-    path = "/facilities/#{@facility_id}/submissions/limited.json"
-    parseDate = d3.time.format("%Y-%m-%d %H:%M:%S UTC").parse
+    path = "/facilities/#{@facility_id}/submissions/limited.json?hours=" + hours
+    parseDate = d3.time.format("%Y-%m-%d %H:%M:%S -0400").parse
 
     $.ajax(path, {async: false, accepts: "application/json"})
     .done( (json_data) ->
@@ -112,6 +113,23 @@ class Graph
           driers:  datum[2]
         })
     )
+    # add a fake data point to the biginning and end
+    # which are the same size as the ones closer to the middle than them
+    old = new Date()
+    now = new Date()
+    old = new Date(old.setHours(now.getHours() - 4))
+    data.unshift({
+      date: old
+      washers: data[0].washers
+      driers:  data[0].driers
+    })
+    data.push({
+      date: now
+      washers: data[data.length-1].washers
+      driers: data[data.length-1].driers
+    })
+    for datum in data
+      console.log datum.date + ", " + datum.washers + ", " + datum.driers
     @data = data
 
   # set the @svg object with the appropriate viewbox, and
@@ -171,7 +189,7 @@ class AverageAreaGraph extends Graph
         .x( (d) -> x(d.date) )
         .y0( @height )
         .y1( (d) -> y((d.washers + d.driers)/2))
-        .interpolate("monotone")
+        .interpolate("basis")
     @svg.append("path")
       .datum(@data)
        .attr("class", "area area-average")
@@ -185,11 +203,11 @@ class LineGraph extends Graph
     washersLine = d3.svg.line()
         .x( (d) -> x(d.date) )
         .y( (d) -> y(d.washers) )
-        .interpolate("monotone")
+        .interpolate("basis")
     driersLine = d3.svg.line()
         .x( (d) -> x(d.date) )
         .y( (d) -> y(d.driers) )
-        .interpolate("monotone")
+        .interpolate("basis")
     @svg.append("path")
       .datum(@data)
       .attr("class", "line line-washers")
@@ -208,20 +226,20 @@ class StackedAreaGraph extends Graph
         .x( (d) -> x(d.date) )
         .y0( @height )
         .y1( (d) -> y(d.washers/2) )
-        .interpolate("monotone")
+        .interpolate("basis")
     driersArea = d3.svg.area()
         .x( (d) -> x(d.date) )
         .y0( (d) -> y(d.washers/2) )
         .y1( (d) -> y((d.washers + d.driers)/2) )
-        .interpolate("monotone")
+        .interpolate("basis")
     washersLine = d3.svg.line()
         .x( (d) -> x(d.date) )
         .y( (d) -> y(d.washers/2) )
-        .interpolate("monotone")
+        .interpolate("basis")
     driersLine = d3.svg.line()
         .x( (d) -> x(d.date) )
         .y( (d) -> y((d.driers + d.washers)/2) )
-        .interpolate("monotone")
+        .interpolate("basis")
     @svg.append("path")
       .datum(@data)
       .attr("class", "area area-washers")
