@@ -18,16 +18,23 @@
           = link_to "Users", users_url
         %li{class: ("active" if params[:controller] == 'pages' && params[:action] == 'about')}
           = link_to "About", about_url
-      %ul.nav.navbar-nav.pull-right
-        - if user_signed_in?
+      - if user_signed_in?
+        %ul.nav.navbar-nav.pull-right.navbar-collapse-hidden
           %li= link_to current_user.name, user_path(current_user)
           %li
             %a{href: destroy_user_session_path}
               Logout
               .glyphicon.glyphicon-log-out
-        - else
-          -# IF THE NAVBAR IS COLLAPSED
-          %li.dropdown.navbar-collapse-hidden
+        %ul.nav.navbar-nav.navbar-collapse-only
+          %li= link_to current_user.name, user_path(current_user)
+          %li
+            %a{href: destroy_user_session_path}
+              Logout
+              .glyphicon.glyphicon-log-out
+      - else
+        -# IF THE NAVBAR IS COLLAPSED
+        %ul.nav.navbar-nav.pull-right.navbar-collapse-hidden
+          %li.dropdown
             %a.dropdown-toggle{:href => "#", :"data-toggle" => "dropdown"}
               Sign In
               %span.glyphicon.glyphicon-chevron-down
@@ -45,6 +52,6 @@
                     Remember Me
                 .form-group
                   = f.submit "Login", class: "btn btn-primary", style: "width: 100%"
-          -# IF THE NAVBAR IS NOT COLLAPSED
-          %li.dropdown.navbar-collapse-only
-            = link_to "Sign In", session_path(:user)
+        -# IF THE NAVBAR IS NOT COLLAPSED
+        %ul.nav.navbar-nav.navbar-collapse-only
+          %li= link_to "Sign In", session_path(:user)
