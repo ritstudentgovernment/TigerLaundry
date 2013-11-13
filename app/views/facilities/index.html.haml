@@ -14,22 +14,22 @@
   .col-md-9
     - @facilities.each do |facility|
       .row
-        .linksGraph{:"facility-id" => facility.id, :style => "padding-bottom: 20px;"}
-          .links
-            %h2{:style => "margin: 0px;"}
-              = link_to facility_path(facility) do
-                %strong><
-                  = facility.name.gsub(/\s+/, "")
-                Laundry
-            %span{:style => "line-height: 40px;"}
-              - if facility.submissions.last
-                Last updated
-                = time_ago_in_words(facility.submissions.last.created_at)
-                ago
-              - else
-                No Recent Submissions
-          .graph.facility-graph.svg-content{:"facility-id" => facility.id, :data => {'height' => 150, 'margin' => 0}}
-          
+        .linksGraph.panel.panel-default
+          .panel-body
+            .links
+              %h2{:style => "margin: 0px;"}
+                = link_to facility_path(facility) do
+                  %strong><
+                    = facility.name.gsub(/\s+/, "")
+                  Laundry
+              %span{:style => "line-height: 40px;"}
+                - if facility.submissions.last
+                  Last updated
+                  = time_ago_in_words(facility.submissions.last.created_at)
+                  ago
+                - else
+                  No Recent Submissions
+            .graph.facility-graph.draw-xaxis.draw-yaxis{:"facility-id" => facility.id, :data => {'height' => 150, 'margin' => 0}}
       / .panel.panel-default{:"facility-id" => facility.id}
       /   %div.panel-heading
       /     = link_to facility.name, facility_path(facility)

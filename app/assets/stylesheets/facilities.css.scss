@@ -51,20 +51,6 @@ $averageAreaColor: $RITorange;
     fill: $averageAreaColor;
 }
 
-.linksGraph {
-  position: relative;
-  .links {
-    position: absolute;
-    z-index: 2; 
-  }
-  .graph {
-    position: absolute;
-    z-index: 1;
-  }
-}
-
-
-
 // .svg-container {
 // display: inline-block;
 // position: relative;

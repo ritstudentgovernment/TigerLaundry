@@ -52,7 +52,7 @@ class Graph
     }
 
   setHeightWidth: () ->
-    @width  = @$_elem.parent().width();
+    @width  = @$_elem.parent().width() # the viewbox for the svg (not the actual size of the svg)
     @height = Math.floor(@width*(9/16)) # sets a 16:9 ViewBox ratio
 
   setAxes: () ->
@@ -77,21 +77,8 @@ class Graph
                .tickFormat((d) -> d + "%") # make the ticks look like percents
     @y.domain [0, 100]
 
-  # set up a callback so the @elem (wrapping the svg) will have a
-  # limited height. fixes chrome being greedy about height
   setupResizing: () ->
-    # debugger;
-    # @$_elem.parent().parent().attr('height', @height + 'px');
-    # $(@elem.parentElement).style('height', @height + 'px');
-    #setHeightWidth()
-    @$_elem.parent().css('height', @height + 'px')
-    # elem = @$_elem
-    # height = @height
-    # width  = @width
-    # setHeight = () ->
-    #   elem.css "height", Math.floor($(elem).width()*(height/width))
-    # setHeight()
-    # $(window).resize setHeight
+    null
 
   # Set the submission data, @data to an array of objects:
   # [ {date: date, washers: int, driers: int},  ... ]
@@ -139,8 +126,6 @@ class Graph
     width = @width + @margin.left + @margin.right
     height = @height + @margin.top + @margin.bottom
     @svg = d3.select(@elem).append("svg")
-        .attr("width", width + 'px')
-        .attr("height", height + 'px')
         .attr("viewBox", "0 0 #{width} #{height}")
         .attr("preserveAspectRatio", "xMinYMid")
       .append("g")
@@ -162,21 +147,24 @@ class Graph
     null
 
   drawAxes: () ->
+    fontSize = "13pt"
     if @shouldDrawXAxis()
       @svg.append("g")
         .attr("class", "x axis")
         .attr("transform", "translate(0,"+ @height + ")")
+        .style("font-size", fontSize)
         .call(@xAxis)
     if @shouldDrawYAxis()
       @svg.append("g")
           .attr("class", "y axis")
+          .style("font-size", fontSize)
           .call(@yAxis)
         .append("text")
           .attr("transform", "rotate(-90)")
           .attr("y", -50)
           .attr("x", -80)
           .style("text-anchor", "end")
-          .style("font-size", "12pt")
+          .style("font-size", fontSize)
           .text("Percent In Use")
 
 # ########### Concrete implementations of Graphs ############### #
