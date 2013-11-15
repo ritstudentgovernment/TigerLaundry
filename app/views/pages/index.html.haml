@@ -1,6 +1,8 @@
-.page-header
-  %h1
-    TigerLaundry
-    %small Currently in development
-- if can? :read, Facility
-  = link_to "Facilities", facilities_url, class: "btn btn-primary"
+.panel.panel-default.island
+  .panel-body
+    .page-header
+      %h1
+        TigerLaundry
+        %small Currently in development
+    - if can? :read, Facility
+      = link_to "Facilities", facilities_url, class: "btn btn-primary"

@@ -3,7 +3,7 @@
 .row
   .col-md-3
     -# List all of the facilities
-    %ul.nav.nav-stacked.nav-pills
+    %ul.nav.nav-stacked.nav-pills.island
       - @facilities.each do |facility|
         %li= link_to facility.name, facility_path(facility)
       - if can? :create, Facility
@@ -14,7 +14,7 @@
   .col-md-9
     - @facilities.each do |facility|
       .row
-        .linksGraph.panel.panel-default
+        .linksGraph.panel.panel-default.island
           .panel-body
             .links
               %h2{:style => "margin: 0px;"}
@@ -30,33 +30,3 @@
                 - else
                   No Recent Submissions
             .graph.facility-graph.draw-xaxis.draw-yaxis{:"facility-id" => facility.id, :data => {'height' => 150, 'margin' => 0}}
-      / .panel.panel-default{:"facility-id" => facility.id}
-      /   %div.panel-heading
-      /     = link_to facility.name, facility_path(facility)
-      /     - status = facility.status
-      /     - if status == :full
-      /       .label.label-danger Full
-      /     - elsif status == :almost_full
-      /       .label.label-warning Almost Full
-      /     - else
-      /       .label.label-success Open
-      /   .panel-body
-      /     .panel.panel-default
-      /       .panel-body
-      /         .row
-      /           .col-md-4
-      /             %div.facility-graph{:"facility-id" => facility.id}
-      /           .col-md-8
-      /             = render 'submissions/status_summary',
-      /                      submission: facility.last_submission
-      /     .row
-      /       .col-md-12
-      /         .btn-group
-      /           - if can? :create, Submission
-      /             = link_to 'New Submission',
-      /                       new_facility_submission_path(facility),
-      /                       class: "btn btn-default"
-      /           - if can? :read, Submission
-      /             = link_to 'All Submissions',
-      /                       facility_submissions_path(facility),
-      /                       class: "btn btn-default"

@@ -1,20 +1,34 @@
-.container
-  .h2.text-center{style: "margin-bottom: 20px;"} Done waiting for an open machine?
-  .row
-    .col-md-4.text-center
-      %h4 View Realtime Statistics
-      = image_tag "stats.png", :style => "width: 75%; margin-left: auto; margin-right: auto;"
-      %p{:style => "text-align: justify;"}
-        %br You're done waiting. We are too. Just click on your facility to see an estimate of it's current availability. 
-    .col-md-4.text-center
-      %h4 Report Often for Premium Features
-      = image_tag "notify.png", :style => "width: 75%; margin-left: auto; margin-right: auto;"
-      %p{:style => "text-align: justify;"}
-        %br TigerLaundry crowd-sources information from our users. We reward you with on-demand email/text alerts when your preferred facility is at low capacity.
-    .col-md-4.text-center
-      %h4 Help Out by Modding
-      = image_tag "mod.png", :style => "width: 75%; margin-left: auto; margin-right: auto;"
-      %p{:style => "text-align: justify;"}
-        %br You'll be auto-promoted to our premium features. Moderators ensure our data's accuracy at one Facility.
-  .row{:style => "padding-top: 50px;"}
-    .text-center Created by the Society of Software Engineers &copy; 2013.
+.panel.panel-default.island
+  .panel-body
+    .h2.text-center{style: "margin-bottom: 20px;"} Done waiting for an open machine?
+    .row
+      .col-md-4.text-center
+        %h4 View Realtime Statistics
+        = image_tag "stats.png",
+                     :style => "width: 75%; margin-left: auto; margin-right: auto;"
+        %p{:style => "text-align: justify;"}
+          %br
+            You're done waiting. We are too. Just click
+            on your facility to see an estimate of it's
+            current availability. 
+      .col-md-4.text-center
+        %h4 Report Often for Premium Features
+        = image_tag "notify.png",
+                    :style => "width: 75%; margin-left: auto; margin-right: auto;"
+        %p{:style => "text-align: justify;"}
+          %br
+            TigerLaundry crowd-sources information from
+            our users. We reward you with on-demand
+            email/text alerts when your preferred facility
+            is at low capacity.
+      .col-md-4.text-center
+        %h4 Help Out by Modding
+        = image_tag "mod.png",
+                    :style => "width: 75%; margin-left: auto; margin-right: auto;"
+        %p{:style => "text-align: justify;"}
+          %br
+            You'll be auto-promoted to our premium
+            features. Moderators ensure our data's
+            accuracy at one Facility.
+    .row{:style => "padding-top: 50px;"}
+      .text-center Created by the Society of Software Engineers &copy; 2013.

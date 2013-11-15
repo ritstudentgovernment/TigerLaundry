@@ -30,17 +30,34 @@ $font-family-sans-serif: Open Sans, Helvetica, Arial, sans-serif;
   }
 }
 
-// ---- Page Tweaks ----
+// ---- General Page Tweaks ----
 a:hover {
   text-decoration: none;
 }
 
-svg { max-height: 100%; }
+svg {
+  max-height: 100%;
+}
+
 body, html {
-    height: 100%;
-    width: 100%;
-    margin: 0;
-    padding: 0;
+  // image found at http://subtlepatterns.com/sandpaper/
+  background-image: asset-url("sandpaper.png");
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-stacked {
+  margin-bottom: 10px;
+}
+
+// represents some information isolated from the background
+.island {
+  background: white;
+  border-radius: $borderRadius;
+  border: none;
+  box-shadow: $boxShadow;
 }
 
 // ---- Other imports ----
