@@ -5,16 +5,20 @@
 
 @import "variables";
 
+// ---- Bootstrap Customizations ----
+// These must be performed before bootstrap is imported
+@import url(http://fonts.googleapis.com/css?family=Open+Sans);
+$link-color: $RITorange;
+$font-family-sans-serif: Open Sans, Helvetica, Arial, sans-serif;
+@import "twitter/bootstrap";
+
+// ---- Slider Customizations ----
 .slider {
   width: 100% !important;
   max-width: 600px;
 }
 
-
-
-/*
- * Hack to control what links work collapsed / uncollapsed
- */
+// Hack to control what links work collapsed / uncollapsed
 @media (min-width: 768px) {
   .navbar-collapse-only {
     display: none !important;
@@ -26,20 +30,7 @@
   }
 }
 
-// Bootstrap Customizations
-$link-color: $RITorange;
-
-@font-face {
-font-family: 'Open Sans';
-src: url('http://fonts.googleapis.com/css?family=Open+Sans');
-}
-
-$font-family-sans-serif: Open Sans, Helvetica, Arial, sans-serif;
-
-@import "twitter/bootstrap";
-@import "facilities.css.scss";
-
-// Good things
+// ---- Page Tweaks ----
 a:hover {
   text-decoration: none;
 }
@@ -51,3 +42,6 @@ body, html {
     margin: 0;
     padding: 0;
 }
+
+// ---- Other imports ----
+@import "facilities.css.scss";
